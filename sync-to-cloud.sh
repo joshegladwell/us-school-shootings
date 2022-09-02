@@ -1,5 +1,3 @@
-
-
 # SYNC LOCAL VERSION OF WEBSITE TO GU-DOMAINS SERVER
 rsync -alvr --delete 501-project-website gladwell@gladwell.georgetown.domains:/home/gladwell/public_html/
 
