@@ -35,15 +35,441 @@
 
         <div>
             <p>
-                First and foremost, I am using a dataset from the <a href="https://www.chds.us/ssdb/data-map/">
-                Center for Homeland Defense and Security (CHDS)</a> that tracks "shooting incidents at K-12
-                schools (Jan 1970 - Jun 2022)." I downloaded the data from this website as an excel file with
-                a "README" in its first tab and four tables in the remaining tabs: incident, shooter, victim,
-                and weapon. I exported these tables as csv files and created a README.txt, which can be found
-                in my GitHub repo
+                First and foremost, I am using a dataset from the Center for Homeland Defense and Security (CHDS)
+                that tracks "shooting incidents at K-12 schools (Jan 1970 - Jun 2022)." I downloaded the data from
+                <a href="https://www.chds.us/ssdb/data-map/">this</a> website as an excel file with a "README" in
+                its first tab and four tables in the remaining tabs: incident, shooter, victim, and weapon. I exported
+                these tables as csv files and created a README.txt, which can be found in my GitHub repo
                 <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data/01-modified-data/SSDB">
-                here</a>.
+                here</a>. The data are formatted as follows:
             </p>
+            <h4>incident.csv</h4>
+            <div class="scroll">
+                <table border="1">
+                    <thead>
+                    <tr style="text-align: right;">
+                        <th></th>
+                        <th>Incident_ID</th>
+                        <th>Sources</th>
+                        <th>Number_News</th>
+                        <th>Media_Attention</th>
+                        <th>Reliability</th>
+                        <th>Date</th>
+                        <th>Quarter</th>
+                        <th>School</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>School_Level</th>
+                        <th>Location</th>
+                        <th>Location_Type</th>
+                        <th>During_School</th>
+                        <th>Time_Period</th>
+                        <th>First_Shot</th>
+                        <th>Summary</th>
+                        <th>Narrative</th>
+                        <th>Situation</th>
+                        <th>Targets</th>
+                        <th>Accomplice</th>
+                        <th>Hostages</th>
+                        <th>Barricade</th>
+                        <th>Officer_Involved</th>
+                        <th>Bullied</th>
+                        <th>Domestic_Violence</th>
+                        <th>Gang_Related</th>
+                        <th>Preplanned</th>
+                        <th>Shots_Fired</th>
+                        <th>Active_Shooter_FBI</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>0</th>
+                        <td>20220620ILGRC</td>
+                        <td>https://www.cbsnews.com/chicago/news/woman-and...</td>
+                        <td>50</td>
+                        <td>National</td>
+                        <td>4</td>
+                        <td>2022-06-20</td>
+                        <td>Summer</td>
+                        <td>Gresham School of Excellence</td>
+                        <td>Chicago</td>
+                        <td>IL</td>
+                        <td>Elementary</td>
+                        <td>Field (General)</td>
+                        <td>Outside on School Property</td>
+                        <td>No</td>
+                        <td>Night</td>
+                        <td>01:00:00</td>
+                        <td>3 people shot on elementary school field</td>
+                        <td>100 shots were fired on the field of the eleme...</td>
+                        <td>NaN</td>
+                        <td>Both</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>100</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <td>20220613WAMAE</td>
+                        <td>https://www.q13fox.com/news/deputies-arrest-15...</td>
+                        <td>5</td>
+                        <td>Local</td>
+                        <td>4</td>
+                        <td>2022-06-13</td>
+                        <td>Summer</td>
+                        <td>Mariner High School</td>
+                        <td>Everett</td>
+                        <td>WA</td>
+                        <td>High</td>
+                        <td>Parking Lot</td>
+                        <td>Outside on School Property</td>
+                        <td>No</td>
+                        <td>After School</td>
+                        <td>15:10:00</td>
+                        <td>Shots fired in parking lot by teen during afte...</td>
+                        <td>A 15-year-old male fired shots at two teens in...</td>
+                        <td>Escalation of Dispute</td>
+                        <td>Victims Targeted</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>99</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>2</th>
+                        <td>20220610ALBYB</td>
+                        <td>https://www.actionnews5.com/2022/06/10/student...</td>
+                        <td>3</td>
+                        <td>Local</td>
+                        <td>4</td>
+                        <td>2022-06-10</td>
+                        <td>Summer</td>
+                        <td>Byhalia High School</td>
+                        <td>Byhalia</td>
+                        <td>MS</td>
+                        <td>High</td>
+                        <td>Parking Lot</td>
+                        <td>Outside on School Property</td>
+                        <td>Yes</td>
+                        <td>Morning Classes</td>
+                        <td>10:30:00</td>
+                        <td>Student fired gun in parking lot during dispute</td>
+                        <td>Student (unidentified minor) fired shot during...</td>
+                        <td>Escalation of Dispute</td>
+                        <td>Victims Targeted</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>1</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>3</th>
+                        <td>20220609ALWAG</td>
+                        <td>https://www.live5news.com/2022/06/09/potential...</td>
+                        <td>100</td>
+                        <td>National</td>
+                        <td>4</td>
+                        <td>2022-06-09</td>
+                        <td>Summer</td>
+                        <td>Walnut Park Elementary School</td>
+                        <td>Gadsden</td>
+                        <td>AL</td>
+                        <td>Elementary</td>
+                        <td>Front of School</td>
+                        <td>Outside on School Property</td>
+                        <td>Yes</td>
+                        <td>Morning Classes</td>
+                        <td>09:30:00</td>
+                        <td>Man fatally shot by SRO while trying to break-...</td>
+                        <td>A 32-year-old man was fatally shot by a school...</td>
+                        <td>Officer-Involved Shooting</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                    </tr>
+                    <tr>
+                        <th>4</th>
+                        <td>20220608ARLIL</td>
+                        <td>https://www.kark.com/crime/lrpd-school-bus-hit...</td>
+                        <td>5</td>
+                        <td>National</td>
+                        <td>4</td>
+                        <td>2022-06-08</td>
+                        <td>Summer</td>
+                        <td>Little Rock School District Bus</td>
+                        <td>Little Rock</td>
+                        <td>AR</td>
+                        <td>Other</td>
+                        <td>School Bus</td>
+                        <td>School Bus</td>
+                        <td>Yes</td>
+                        <td>Dismissal</td>
+                        <td>16:01:00</td>
+                        <td>Shots struck school bus driving student home</td>
+                        <td>Shots struck a school bus. Driver and student ...</td>
+                        <td>NaN</td>
+                        <td>Both</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>NaN</td>
+                        <td>No</td>
+                        <td>99</td>
+                        <td>No</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>shooter.csv</h4>
+            <div class="scroll">
+                <table border="1">
+                    <thead>
+                      <tr style="text-align: right;">
+                        <th></th>
+                        <th>incidentid</th>
+                        <th>age</th>
+                        <th>gender</th>
+                        <th>race</th>
+                        <th>schoolaffiliation</th>
+                        <th>shooteroutcome</th>
+                        <th>shooterdied</th>
+                        <th>injury</th>
+                        <th>chargesfiled</th>
+                        <th>verdict</th>
+                        <th>minorchargedadult</th>
+                        <th>criminalhistory</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>0</th>
+                        <td>20220620ILGRC</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>No Relation</td>
+                        <td>Fled/Escaped</td>
+                        <td>No</td>
+                        <td>None</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                      <tr>
+                        <th>1</th>
+                        <td>20220613WAMAE</td>
+                        <td>15</td>
+                        <td>Male</td>
+                        <td>NaN</td>
+                        <td>Student</td>
+                        <td>Fled/Apprehended</td>
+                        <td>No</td>
+                        <td>None</td>
+                        <td>unlawful possession of a firearm, disturbing s...</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                      <tr>
+                        <th>2</th>
+                        <td>20220610ALBYB</td>
+                        <td>Teen</td>
+                        <td>Male</td>
+                        <td>NaN</td>
+                        <td>Student</td>
+                        <td>Fled/Apprehended</td>
+                        <td>No</td>
+                        <td>None</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                      <tr>
+                        <th>3</th>
+                        <td>20220609ALWAG</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>Police Officer/SRO</td>
+                        <td>Law Enforcement</td>
+                        <td>No</td>
+                        <td>None</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                      <tr>
+                        <th>4</th>
+                        <td>20220608ARLIL</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>No Relation</td>
+                        <td>Fled/Escaped</td>
+                        <td>No</td>
+                        <td>None</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>victim.csv</h4>
+            <div class="scroll">
+                <table border="1">
+                    <thead>
+                      <tr style="text-align: right;">
+                        <th></th>
+                        <th>incidentid</th>
+                        <th>race</th>
+                        <th>injury</th>
+                        <th>gender</th>
+                        <th>schoolaffiliation</th>
+                        <th>age</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>0</th>
+                        <td>20220620ILGRC</td>
+                        <td>NaN</td>
+                        <td>Wounded</td>
+                        <td>Female</td>
+                        <td>No Relation</td>
+                        <td>34</td>
+                      </tr>
+                      <tr>
+                        <th>1</th>
+                        <td>20220620ILGRC</td>
+                        <td>NaN</td>
+                        <td>Wounded</td>
+                        <td>Male</td>
+                        <td>No Relation</td>
+                        <td>16</td>
+                      </tr>
+                      <tr>
+                        <th>2</th>
+                        <td>20220620ILGRC</td>
+                        <td>NaN</td>
+                        <td>Wounded</td>
+                        <td>Female</td>
+                        <td>No Relation</td>
+                        <td>17</td>
+                      </tr>
+                      <tr>
+                        <th>3</th>
+                        <td>20220609ALWAG</td>
+                        <td>Black</td>
+                        <td>Fatal</td>
+                        <td>Male</td>
+                        <td>No Relation</td>
+                        <td>32</td>
+                      </tr>
+                      <tr>
+                        <th>4</th>
+                        <td>20220605INWEG</td>
+                        <td>NaN</td>
+                        <td>Wounded</td>
+                        <td>Male</td>
+                        <td>NaN</td>
+                        <td>19</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h4>weapon.csv</h4>
+            <div class="scroll">
+                <table border="1">
+                    <thead>
+                      <tr style="text-align: right;">
+                        <th></th>
+                        <th>incidentid</th>
+                        <th>weaponcaliber</th>
+                        <th>weapondetails</th>
+                        <th>weapontype</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>0</th>
+                        <td>20220620ILGRC</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                      <tr>
+                        <th>1</th>
+                        <td>20220613WAMAE</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>Handgun</td>
+                      </tr>
+                      <tr>
+                        <th>2</th>
+                        <td>20220610ALBYB</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>Handgun</td>
+                      </tr>
+                      <tr>
+                        <th>3</th>
+                        <td>20220609ALWAG</td>
+                        <td>Service Weapon</td>
+                        <td>NaN</td>
+                        <td>Handgun</td>
+                      </tr>
+                      <tr>
+                        <th>4</th>
+                        <td>20220608ARLIL</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                        <td>NaN</td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
         </div>
     </body>
 </html>

@@ -1,8 +1,6 @@
 
 body {
     font-family:verdana;
-    background-image: ;
-    background-color: ;
 
 }
 
@@ -70,4 +68,10 @@ tr{
 
 img:hover {
   opacity: .6;
+}
+
+div.scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
 }
