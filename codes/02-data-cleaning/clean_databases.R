@@ -67,3 +67,29 @@ write.csv(shooters_clean_MS,
           "../../data/02-clean-data/MSDB/school_shooters.csv",
           row.names = FALSE)
 
+# Now let's take a closer look at the shooters that aren't present in SSDB and
+# ascertain why
+SS_missing <- shooters_clean_MS[shooters_clean_MS$Incident_ID =="NA",]
+write.csv(SS_missing,
+          "../../data/02-clean-data/missing_shooters.csv",
+          row.names = FALSE)
+
+
+#######
+# For printing tables in html
+# library(xtable)
+# print(xtable(incident_SS[incident_SS$Incident_ID == "20210902CASAL",]), type = "html")
+
+# For context/information on data_cleaning.html
+# How many total shooters are listed in MSDB?
+# nrow(shooters_MS)
+# 351
+
+# How many school shooters are listed in MSDB?
+# nrow(shooters_clean_MS)
+# 24
+
+# How many of the school shooters in MSDB are also listed in SSDB?
+# nrow(shooters_clean_MS[shooters_clean_MS$Incident_ID !="NA",])
+# 14
+#######
