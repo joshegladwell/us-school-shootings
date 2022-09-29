@@ -57,11 +57,13 @@ for (i in 1:length(partial_ids)) {
   }
 }
 
-# Save completed IDs to shooters_clean_MS, reorder columns, drop partial ids
+# Save completed IDs to shooters_clean_MS, reorder columns, reformat dates for
+# easier comparison with SSDB
 shooters_clean_MS <- shooters_clean_MS %>%
-  mutate(Incident_ID = partial_ids) %>%
+  mutate(Incident_ID = partial_ids,
+         Full.Date.SSDB = sprintf("%04d-%02d-%02d", Year, Month, Day)) %>%
   select(c(-Incident_ID_partial)) %>%
-  relocate(Incident_ID)
+  relocate(c(Incident_ID, Full.Date.SSDB))
 
 write.csv(shooters_clean_MS,
           "../../data/02-clean-data/MSDB/school_shooters.csv",
@@ -69,11 +71,14 @@ write.csv(shooters_clean_MS,
 
 # Now let's take a closer look at the shooters that aren't present in SSDB and
 # ascertain why
-SS_missing <- shooters_clean_MS[shooters_clean_MS$Incident_ID =="NA",]
-write.csv(SS_missing,
+MS_missing <- shooters_clean_MS[shooters_clean_MS$Incident_ID =="NA",]
+write.csv(MS_missing,
           "../../data/02-clean-data/missing_shooters.csv",
           row.names = FALSE)
 
+# Return all SSDB incidents that occurred on the the same day as a missing
+# MSDB incident
+SS_missing <- incident_SS[incident_SS$Date %in% MS_missing$Full.Date.SSDB,]
 
 #######
 # For printing tables in html
