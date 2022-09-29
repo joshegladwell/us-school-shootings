@@ -66,10 +66,6 @@ tr{
     background-color:#ffffff
 }
 
-img:hover {
-  opacity: .6;
-}
-
 div.scroll {
     overflow-x: auto;
     overflow-y: hidden;

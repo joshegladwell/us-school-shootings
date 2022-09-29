@@ -6,7 +6,19 @@ data_path <- "../../data/01-modified-data/"
 shooters_MS <- read.csv(paste0(data_path, "MSDB/mass_shooter_database.csv"),
                      skip = 1)
 incident_SS <- read.csv(paste0(data_path, "SSDB/incident.csv"))
-shooters_SS <- read.csv(paste0(data_path, "SSDB/shooter.csv"))
+shooters_SS <- read.csv(paste0(data_path, "SSDB/shooter.csv")) %>%
+  # Match column name for unique key identifier column with that of the
+  # incident table
+  rename(Incident_ID = incidentid)
+victims_SS <- read.csv(paste0(data_path, "SSDB/victim.csv")) %>%
+  # Match column name for unique key identifier column with that of the
+  # incident table
+  rename(Incident_ID = incidentid)
+
+write.csv(shooters_SS, "../../data/02-clean-data/SSDB/shooter.csv",
+          row.names = FALSE)
+write.csv(victims_SS, "../../data/02-clean-data/SSDB/victim.csv",
+          row.names = FALSE)
 
 # There appears to be a duplicate Incident_ID in the school shooting DB
 #incident_SS[duplicated(incident_SS$Incident_ID),]$Incident_ID
