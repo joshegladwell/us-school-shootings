@@ -18,6 +18,7 @@ X = vectorizer.fit_transform(narratives)
 # Organize sparse count matrix into dataframe, include labels column
 token_counts = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names_out())
 token_counts['y_label'] = labels
+token_counts['narrative_texts'] = narratives
 
 # Save to CSV
 token_counts.to_csv('../../data/02-clean-data/SSDB/narrative_vectors.csv', index=False)
