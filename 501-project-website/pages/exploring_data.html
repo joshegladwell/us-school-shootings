@@ -11,35 +11,43 @@
 
 
     <body>
-        <!-- HEADER BAR -->
-        <ul>
-            <!-- tabs -->
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="./about_me.html">About Me</a></li>
-            <li><a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a></li>
-            <li><a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a></li>
-            <li><a href="./introduction.html">Introduction</a></li>
-            <li><a href="./data_gathering.html">Data Gathering</a></li>
-            <li><a href="./data_cleaning.html">Data Cleaning</a></li>
-            <li><a href="./exploring_data.html">Exploring Data</a></li>
-            <li><a href="./naive_bayes.html">Naive Bayes</a></li>
-            <li><a href="./decision_trees.html">Decision Trees</a></li>
-            <li><a href="./svm.html">SVM</a></li>
-            <li><a href="./clustering.html">Clustering</a></li>
-            <li><a href="./arm_networking.html">ARM and Networking</a></li>
-            <li><a href="./conclusions.html">Conclusions</a></li>
-        </ul>
+        <div class="header">
+            <div class="header-center">
+                <a class="logo" href="../index.html">jg</a>
+            </div>
+            <div class="header-sub">
+                Joshua Gladwell
+            </div>
+            <div class="header-tabs">
+                <a href="./about_me.html">About Me</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a>
+                <a href="./introduction.html">Introduction</a>
+                <a href="./data_gathering.html">Data Gathering</a>
+                <a href="./data_cleaning.html">Data Cleaning</a>
+                <a href="./exploring_data.html">Exploring Data</a>
+                <a href="./naive_bayes.html">Naive Bayes</a>
+                <a href="./decision_trees.html">Decision Trees</a>
+                <a href="./svm.html">SVM</a>
+                <a href="./clustering.html">Clustering</a>
+                <a href="./arm_networking.html">ARM and Networking</a>
+                <a href="./conclusions.html">Conclusions</a>
+            </div>
+        </div>
 
-        <h1 class="title toc-ignore"> Exploring Data</h1>
-        <div>
+        <div class="text">
+            <h1> Exploring Data</h1>
+
             <h2>Exploratory Analysis of the School Shooting Database</h2>
+
             <p>In order to familiarize ourselves with the data, we will now examine a series of visualizations to acquaint ourselves with the data. This will help us to raise new questions, find partial answers to introductory questions, and find directions to move forward in the project.</p>
             <img src="../images/EDA_plots/deaths_vs_incidents2.png" width="1200">
             <p>Clearly there is a correlation between the number of school shooting incidents and the number of deaths from school shootings. This makes sense. I am a little surprised that there isn't a dramatic increase in either deaths or incidents following the Columbine shooting in 1999. General sentiment (link to Malcolm Gladwell, other sources) seems to suggest that Columbine was a significant point by which many future school shooting incidents were inspired. In that vein, it is interesting to note that the number of school shooting incidents seems to follow a cycle of peaks and troughs lasting about 5-10 years each before drastically increasing starting in 2010. What influenced the 5-10 year cycles from 1985 to 2010? And what happened in 2010 that could have influenced the sharp increase in school shooting incidents?</p>
             <p>I was interested to see which levels of school fall victim to school shootings most frequently. From the graph below, I find it interesting that elementary schools and high schools fall victim to shootings more than junior high / middle schools.</p>
-            <img src="../images/EDA_plots/school-level-counts.png" width="1200">
+            <img src="../images/EDA_plots/school-level-counts.png">
 
             <h2>Exploratory Analysis of Text Data</h2>
+
             <p>Finally, we can see a simple wordcloud below representing the frequency of words by font size from the narratives given for each incident in the SSDB. The words are almost exactly what we would expect.</p>
             <img src="../images/EDA_plots/wordcloud.png" width="1200">
         </div>

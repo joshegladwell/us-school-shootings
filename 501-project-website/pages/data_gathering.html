@@ -10,28 +10,32 @@
 
 
     <body>
-        <!-- HEADER BAR -->
-        <ul>
-            <!-- tabs -->
-            <li><a href="../index.html">Home</a></li>
-            <li><a href="./about_me.html">About Me</a></li>
-            <li><a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a></li>
-            <li><a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a></li>
-            <li><a href="./introduction.html">Introduction</a></li>
-            <li><a href="./data_gathering.html">Data Gathering</a></li>
-            <li><a href="./data_cleaning.html">Data Cleaning</a></li>
-            <li><a href="./exploring_data.html">Exploring Data</a></li>
-            <li><a href="./naive_bayes.html">Naive Bayes</a></li>
-            <li><a href="./decision_trees.html">Decision Trees</a></li>
-            <li><a href="./svm.html">SVM</a></li>
-            <li><a href="./clustering.html">Clustering</a></li>
-            <li><a href="./arm_networking.html">ARM and Networking</a></li>
-            <li><a href="./conclusions.html">Conclusions</a></li>
-        </ul>
+        <div class="header">
+            <div class="header-center">
+                <a class="logo" href="../index.html">jg</a>
+            </div>
+            <div class="header-sub">
+                Joshua Gladwell
+            </div>
+            <div class="header-tabs">
+                <a href="./about_me.html">About Me</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a>
+                <a href="./introduction.html">Introduction</a>
+                <a href="./data_gathering.html">Data Gathering</a>
+                <a href="./data_cleaning.html">Data Cleaning</a>
+                <a href="./exploring_data.html">Exploring Data</a>
+                <a href="./naive_bayes.html">Naive Bayes</a>
+                <a href="./decision_trees.html">Decision Trees</a>
+                <a href="./svm.html">SVM</a>
+                <a href="./clustering.html">Clustering</a>
+                <a href="./arm_networking.html">ARM and Networking</a>
+                <a href="./conclusions.html">Conclusions</a>
+            </div>
+        </div>
 
-
-        <h1 class="title toc-ignore">Data Gathering</h1>
-        <div>
+        <div class="text">
+            <h1>Data Gathering</h1>
         	<h2>K-12 School Shooting Database - Center for Homeland Defense and Security</h2>
             <p> First and foremost, I am using a dataset from the Center for Homeland Defense and Security (CHDS) that tracks "shooting incidents at K-12 schools (Jan 1970 - Jun 2022)." I downloaded the data from <a href="https://www.chds.us/ssdb/data-map/">this</a> website as an excel file with a "README" in its first tab and four tables in the remaining tabs: incident, shooter, victim, and weapon. I exported these tables as csv files and created a README.txt, which can be found in my GitHub repo <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data/01-modified-data/SSDB"> here</a>. The data are formatted as follows: </p>
             
@@ -247,98 +251,98 @@
             <div class="scroll">
                 <table border="1">
                     <thead>
-                      <tr style="text-align: right;">
-                        <th></th>
-                        <th>incidentid</th>
-                        <th>age</th>
-                        <th>gender</th>
-                        <th>race</th>
-                        <th>schoolaffiliation</th>
-                        <th>shooteroutcome</th>
-                        <th>shooterdied</th>
-                        <th>injury</th>
-                        <th>chargesfiled</th>
-                        <th>verdict</th>
-                        <th>minorchargedadult</th>
-                        <th>criminalhistory</th>
-                      </tr>
+                        <tr style="text-align: right;">
+                            <th></th>
+                            <th>incidentid</th>
+                            <th>age</th>
+                            <th>gender</th>
+                            <th>race</th>
+                            <th>schoolaffiliation</th>
+                            <th>shooteroutcome</th>
+                            <th>shooterdied</th>
+                            <th>injury</th>
+                            <th>chargesfiled</th>
+                            <th>verdict</th>
+                            <th>minorchargedadult</th>
+                            <th>criminalhistory</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th>0</th>
-                        <td>20220620ILGRC</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>No Relation</td>
-                        <td>Fled/Escaped</td>
-                        <td>No</td>
-                        <td>None</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
-                      <tr>
-                        <th>1</th>
-                        <td>20220613WAMAE</td>
-                        <td>15</td>
-                        <td>Male</td>
-                        <td>NaN</td>
-                        <td>Student</td>
-                        <td>Fled/Apprehended</td>
-                        <td>No</td>
-                        <td>None</td>
-                        <td>unlawful possession of a firearm, disturbing s...</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
-                      <tr>
-                        <th>2</th>
-                        <td>20220610ALBYB</td>
-                        <td>Teen</td>
-                        <td>Male</td>
-                        <td>NaN</td>
-                        <td>Student</td>
-                        <td>Fled/Apprehended</td>
-                        <td>No</td>
-                        <td>None</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
-                      <tr>
-                        <th>3</th>
-                        <td>20220609ALWAG</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>Police Officer/SRO</td>
-                        <td>Law Enforcement</td>
-                        <td>No</td>
-                        <td>None</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
-                      <tr>
-                        <th>4</th>
-                        <td>20220608ARLIL</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>No Relation</td>
-                        <td>Fled/Escaped</td>
-                        <td>No</td>
-                        <td>None</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
+                        <tr>
+                            <th>0</th>
+                            <td>20220620ILGRC</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>No Relation</td>
+                            <td>Fled/Escaped</td>
+                            <td>No</td>
+                            <td>None</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <td>20220613WAMAE</td>
+                            <td>15</td>
+                            <td>Male</td>
+                            <td>NaN</td>
+                            <td>Student</td>
+                            <td>Fled/Apprehended</td>
+                            <td>No</td>
+                            <td>None</td>
+                            <td>unlawful possession of a firearm, disturbing s...</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>20220610ALBYB</td>
+                            <td>Teen</td>
+                            <td>Male</td>
+                            <td>NaN</td>
+                            <td>Student</td>
+                            <td>Fled/Apprehended</td>
+                            <td>No</td>
+                            <td>None</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <td>20220609ALWAG</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>Police Officer/SRO</td>
+                            <td>Law Enforcement</td>
+                            <td>No</td>
+                            <td>None</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <th>4</th>
+                            <td>20220608ARLIL</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>No Relation</td>
+                            <td>Fled/Escaped</td>
+                            <td>No</td>
+                            <td>None</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -347,62 +351,62 @@
             <div class="scroll">
                 <table border="1">
                     <thead>
-                      <tr style="text-align: right;">
-                        <th></th>
-                        <th>incidentid</th>
-                        <th>race</th>
-                        <th>injury</th>
-                        <th>gender</th>
-                        <th>schoolaffiliation</th>
-                        <th>age</th>
-                      </tr>
+                        <tr style="text-align: right;">
+                            <th></th>
+                            <th>incidentid</th>
+                            <th>race</th>
+                            <th>injury</th>
+                            <th>gender</th>
+                            <th>schoolaffiliation</th>
+                            <th>age</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th>0</th>
-                        <td>20220620ILGRC</td>
-                        <td>NaN</td>
-                        <td>Wounded</td>
-                        <td>Female</td>
-                        <td>No Relation</td>
-                        <td>34</td>
-                      </tr>
-                      <tr>
-                        <th>1</th>
-                        <td>20220620ILGRC</td>
-                        <td>NaN</td>
-                        <td>Wounded</td>
-                        <td>Male</td>
-                        <td>No Relation</td>
-                        <td>16</td>
-                      </tr>
-                      <tr>
-                        <th>2</th>
-                        <td>20220620ILGRC</td>
-                        <td>NaN</td>
-                        <td>Wounded</td>
-                        <td>Female</td>
-                        <td>No Relation</td>
-                        <td>17</td>
-                      </tr>
-                      <tr>
-                        <th>3</th>
-                        <td>20220609ALWAG</td>
-                        <td>Black</td>
-                        <td>Fatal</td>
-                        <td>Male</td>
-                        <td>No Relation</td>
-                        <td>32</td>
-                      </tr>
-                      <tr>
-                        <th>4</th>
-                        <td>20220605INWEG</td>
-                        <td>NaN</td>
-                        <td>Wounded</td>
-                        <td>Male</td>
-                        <td>NaN</td>
-                        <td>19</td>
-                      </tr>
+                        <tr>
+                            <th>0</th>
+                            <td>20220620ILGRC</td>
+                            <td>NaN</td>
+                            <td>Wounded</td>
+                            <td>Female</td>
+                            <td>No Relation</td>
+                            <td>34</td>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <td>20220620ILGRC</td>
+                            <td>NaN</td>
+                            <td>Wounded</td>
+                            <td>Male</td>
+                            <td>No Relation</td>
+                            <td>16</td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>20220620ILGRC</td>
+                            <td>NaN</td>
+                            <td>Wounded</td>
+                            <td>Female</td>
+                            <td>No Relation</td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <td>20220609ALWAG</td>
+                            <td>Black</td>
+                            <td>Fatal</td>
+                            <td>Male</td>
+                            <td>No Relation</td>
+                            <td>32</td>
+                        </tr>
+                        <tr>
+                            <th>4</th>
+                            <td>20220605INWEG</td>
+                            <td>NaN</td>
+                            <td>Wounded</td>
+                            <td>Male</td>
+                            <td>NaN</td>
+                            <td>19</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -411,50 +415,50 @@
             <div class="scroll">
                 <table border="1">
                     <thead>
-                      <tr style="text-align: right;">
-                        <th></th>
-                        <th>incidentid</th>
-                        <th>weaponcaliber</th>
-                        <th>weapondetails</th>
-                        <th>weapontype</th>
-                      </tr>
+                        <tr style="text-align: right;">
+                            <th></th>
+                            <th>incidentid</th>
+                            <th>weaponcaliber</th>
+                            <th>weapondetails</th>
+                            <th>weapontype</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th>0</th>
-                        <td>20220620ILGRC</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
-                      <tr>
-                        <th>1</th>
-                        <td>20220613WAMAE</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>Handgun</td>
-                      </tr>
-                      <tr>
-                        <th>2</th>
-                        <td>20220610ALBYB</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>Handgun</td>
-                      </tr>
-                      <tr>
-                        <th>3</th>
-                        <td>20220609ALWAG</td>
-                        <td>Service Weapon</td>
-                        <td>NaN</td>
-                        <td>Handgun</td>
-                      </tr>
-                      <tr>
-                        <th>4</th>
-                        <td>20220608ARLIL</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                        <td>NaN</td>
-                      </tr>
+                        <tr>
+                            <th>0</th>
+                            <td>20220620ILGRC</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <td>20220613WAMAE</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>Handgun</td>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <td>20220610ALBYB</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>Handgun</td>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <td>20220609ALWAG</td>
+                            <td>Service Weapon</td>
+                            <td>NaN</td>
+                            <td>Handgun</td>
+                        </tr>
+                        <tr>
+                            <th>4</th>
+                            <td>20220608ARLIL</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                            <td>NaN</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

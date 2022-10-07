@@ -1,52 +1,65 @@
-
-body {
-    font-family:verdana;
-
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+/* Header styles */
+.header {
     overflow: hidden;
-    background-color: #4E3524;
-    max-width:1357px;
+    padding: 10px;
+    border-bottom: 1px solid black;
 }
 
-li {
-    float: left;
-}
-
-li a, .dropbtn {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover, .dropdown:hover .dropbtn {
-    background-color: grey;
-}
-
-li.dropdown {
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 160px;   
-}
-
-.dropdown-content a {
+.header a {
     color: black;
-    padding: 12px 16px;
+    font-size: 12.5pt;
     text-decoration: none;
-    display: block;
-    text-align: left;
-    
+    padding: 8px;
+    white-space: nowrap;
+}
+
+.header a:hover {
+    color: forestgreen;
+}
+
+.header-tabs {
+    font-family: 'Optima';
+    text-align: center;
+    line-height: 150%;
+}
+
+.header-center {
+    text-align: center;
+    height: 130px;
+}
+
+.header-center a.logo {
+    font-family: Century;
+    font-size: 84pt;
+    font-weight: bold;
+    color: forestgreen;
+}
+
+.header-center a.logo:hover {
+    color: forestgreen;
+}
+
+.header-sub {
+    text-align: center;
+    font-style: italic;
+    font-size: 16pt;
+    margin-bottom: 20px;
+}
+
+
+/* Website body */
+.text {
+    font-family: 'Optima';
+    width: 50%;
+    padding-left: 25%;
+}
+
+.text h1, .text h2, .text h4 {
+    color: forestgreen;
+}
+
+.text img {
+    max-width: 100%;
 }
 
 td {
