@@ -79,3 +79,20 @@ div.scroll {
     overflow-y: hidden;
     white-space: nowrap;
 }
+
+/* Homepage styles */
+.home {
+    width: 80%;
+    padding-left: 10%;
+}
+
+.home img {
+    padding-top: 30px;
+    max-width: 40%;
+    float: left;
+}
+
+.home-right {
+    padding-left: 50%;
+}
+
