@@ -5,7 +5,11 @@ library(tidyverse)
 data_path <- "../../data/01-modified-data/"
 shooters_MS <- read.csv(paste0(data_path, "MSDB/mass_shooter_database.csv"),
                      skip = 1)
-incident_SS <- read.csv(paste0(data_path, "SSDB/incident.csv"))
+incident_SS <- read.csv(paste0(data_path, "SSDB/incident.csv")) %>%
+  # Break down Data column into Year, Month, and Day columns
+  mutate(Year = as.numeric(substr(Date, 1, 4)),
+         Month = as.numeric(substr(Date, 6, 7)),
+         Day = as.numeric(substr(Date, 9, 10)))
 shooters_SS <- read.csv(paste0(data_path, "SSDB/shooter.csv")) %>%
   # Match column name for unique key identifier column with that of the
   # incident table

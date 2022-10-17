@@ -1,0 +1,72 @@
+---
+title: "Naive Bayes"
+author: "Josh Gladwell"
+date: "2022-10-11"
+output: html_document
+---
+
+```{r, hidden=TRUE, warning=FALSE}
+library(tidyverse)
+
+library(e1071)
+library(caTools)
+library(caret)
+```
+
+## Import data
+```{r}
+incidents <- read.csv("../../../data/02-clean-data/SSDB/incident.csv")
+shooters <- read.csv("../../../data/02-clean-data/SSDB/shooter.csv")
+victims <- read.csv("../../../data/02-clean-data/SSDB/victim.csv")
+```
+
+## Prepare data
+```{r}
+fatalities <- victims %>%
+  # Create new fatal column (1 if incident was fatal, else 0)
+  mutate(fatal = ifelse(injury == "Fatal", 1, 0)) %>%
+  
+  # Convert new fatal column to factor (prioritizing 1 over 0)
+  mutate(fatal = factor(fatal, levels = c(1,0))) %>%
+  
+  # Order dataframe by fatal column
+  arrange(fatal) %>%
+  
+  # Drop all other rows
+  select(Incident_ID, fatal) %>%
+  
+  # Drop duplicate ids
+  filter(!duplicated(Incident_ID)) %>%
+  
+  # Join with incidents dataframe
+  right_join(incidents, by=c("Incident_ID"))
+
+# Export new dataframe
+write.csv(fatalities,
+          "../../../data/02-clean-data/SSDB/04-naive-bayes/fatalities.csv")
+```
+
+# Classify whether or not a shooting was fatal
+```{r}
+# Clean data for Naive Bayes
+fatalities_NB <- fatalities %>%
+  # Drop unnecessary columns
+  select(fatal, Quarter, State, School_Level, Location_Type, During_School,
+         Time_Period, Bullied, Domestic_Violence, Gang_Related, Preplanned)
+
+# All columns should be numeric
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
