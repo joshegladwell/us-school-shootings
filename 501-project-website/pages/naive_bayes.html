@@ -89,7 +89,7 @@
             </table>
 
             <p>While the original intent of this analysis was going to be prediction of the political standing of each tweet based on the hashtags, the value counts have shown that the data are too biased for this kind of approach. The vast majority of hashtags included in tweets are in favor of gun control, which makes sense because the tweets were queried specifically in connection to individual school shooting incidents. The majority of expressed sentiment after a tragic school shooting incident would understandably be to tighten gun laws. I believe that it is for this reason that the value counts of the hashtags are highly imbalanced, with far greater gun control sentiment over gun rights sentiment.</p>
-            <p>The other issue with this approach would be the ambiguity associated with each label. If we were to treat hashtags as the labels classifying whether a tweet supports stricter or looser gun laws, it is entirely possible that a given hashtag could appear in either type of tweet. For example, a hashtag #nra may appear in a tweet that criticizes National Rifle Association (NRA) agendas or it may appear in a tweet that supports them. These biases in the data have compelled a new approach.</p>
+            <p>The other issue with this approach would be the ambiguity associated with each label. If we were to treat hashtags as the labels classifying whether a tweet supports stricter or looser gun laws, it is entirely possible that a given hashtag could appear in either type of tweet. For example, a hashtag #nra may appear in a tweet that criticizes National Rifle Association (NRA) agendas or it may appear in a tweet that supports them. These biases in the data have forced a new approach.</p>
             <p>Instead of predicting a tweet's political standing, we will instead classify tweets as "News" tweets or "Opinion" tweets. The labels for this analysis will be applied based on the type of hashtags used in the tweet. Hashtag classifications are defined below.</p>
 
             <table class="center-table">
@@ -217,6 +217,41 @@
             <p>It is worth noting that this model was trained and tested exclusively on tweets with hashtags belonging to the classification dictionaries defined above. In total, this set of tweets totals to 39,405 tweets out of the total 2,485,482 tweets we retrieved using the Academic Research Twitter API. This offers an interesting opportunity to apply the model to the remaining 2.4 million tweets about school shootings, gaining insight into the variance between "Opinion" tweet frequency and "News" tweet frequency over time. This will be a point of future analysis, and will be updated here once performed.</p>
 
             <h2>Predicting News Coverage</h2>
+            <p>The School Shooting Database offers a "News Coverage" feature in its dataset that indicates the level of media attention a given school shooting demanded. We are interested in whether factors such as a school's level (Elementary, Middle, High), racial demographic (percent of Black, Hispanic, Asian, and White students enrolled), and the number of fatalities resulting from the incident can accurately determine the level of news coverage (local, regional, national, or international) that the incident receives.</p>
+            <p>We emphasize the intent of this analysis as uncovering insights into past incidents, and in no way do we intend to draw any conclusions on school shooting incidents that may occur in the future.</p>
+            <p>In order to retrieve racial demographic data on United States schools we use the Urban Institute Education Data API to retrieve the desired data released by the Common Core of Data (CCD). Because the SSDB does not include National Center for Education Statistics IDs in its dataset, we create an artificial "pseudo-ID" composed from the year in which the data was gathered / the incident occurred, the two letter abbreviation of the state, the name of the city (excluding spaces), the first five characters of the school name, and a flag indicating whether the school is a high school or not (1 if yes, 0 if no). Despite the thorough construction of this pseudo-ID to link the SSDB data with the CCD data, only 781 schools were successfully linked between the two datasets out of 2,068 incidents in the SSDB. This major loss of data may adversely affect the performance of the Na&iuml;ve Bayes model, and may be an area to return to for future work.</p>
+            <p>Another source of significant bias in this analysis may be the magnitude of missing data for the levels of media attention for each incident. Out of the 781 incidents with linked school data, 596 of them are missing information on the level of media coverage. After accounting for this and other missing data, the dataset is reduced to 133 school shooting incidents. The classes of media coverage for the incidents in the set are distributed as follows:</p>
+            <table class="center-table">
+                <tr>
+                    <th>Local</th>
+                    <th>Regional</th>
+                    <th>National</th>
+                    <th>International</th>
+                </tr>
+                <tr>
+                    <td>89</td>
+                    <td>13</td>
+                    <td>24</td>
+                    <td>7</td>
+                </tr>
+            </table>
+            <p>The results of the Na&iuml;ve Bayes classification can be seen below.</p>
+            <img src="../images/naive_bayes/confusion_matrix_baseline2.png" width="1200">
+            <img src="../images/naive_bayes/confusion_matrix_trained2.png" width="1200">
+            <p>Although the trained model performs much better than the baseline at predicting whether an incident's coverage will be local or not, for the most part the model isn't great at determining the level of news media. However, we can see from the accuracy below that the model is at least better than a random predictor, so it has some value.</p>
+            <table class="center-table">
+                <tr>
+                    <th> </th>
+                    <th>Trained Model</th>
+                    <th>Baseline Model</th>
+                </tr>
+                <tr>
+                    <td>Accuracy</td>
+                    <td>0.529</td>
+                    <td>0.373</td>
+                </tr>
+            </table>
+            <p>This model can definitely use some work, but once it proves stronger performance it may offer value into filling some of the vast missing data for each school shooting incident's level of media attention. Having predictions for this data on all incidents could offer very interesting insights into the aspects of school shootings that the public deems most tragic about school shootings (or at the very least, insight into what the media perceives the public to deem most tragic about school shootings).</p>
         </div>
     </body>
 </html>

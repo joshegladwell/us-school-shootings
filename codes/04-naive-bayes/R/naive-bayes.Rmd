@@ -5,56 +5,207 @@ date: "2022-10-11"
 output: html_document
 ---
 
-```{r, hidden=TRUE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(educationdata)
 
 library(e1071)
 library(caTools)
 library(caret)
 ```
 
-## Import data
-```{r}
-incidents <- read.csv("../../../data/02-clean-data/SSDB/incident.csv")
-shooters <- read.csv("../../../data/02-clean-data/SSDB/shooter.csv")
-victims <- read.csv("../../../data/02-clean-data/SSDB/victim.csv")
+
+## Import and prepare data
+```{r warning=FALSE}
+incidents <- read.csv("../../../data/02-clean-data/SSDB/incident_ncessch.csv") %>%
+  # Drop rows with missing values in the ncessch and Media_Attention columns
+  filter(!is.na(ncessch) & !is.na(Media_Attention)) %>%
+  # Select only necessary columns
+  select(ncessch, Incident_ID, Media_Attention, School_Level, Year) %>%
+  # Convert columns to factors
+  mutate(
+    Media_Attention = as.factor(Media_Attention),
+    School_Level = as.factor(School_Level)
+  )
+
 ```
 
-## Prepare data
-```{r}
-fatalities <- victims %>%
-  # Create new fatal column (1 if incident was fatal, else 0)
-  mutate(fatal = ifelse(injury == "Fatal", 1, 0)) %>%
-  
-  # Convert new fatal column to factor (prioritizing 1 over 0)
-  mutate(fatal = factor(fatal, levels = c(1,0))) %>%
-  
-  # Order dataframe by fatal column
-  arrange(fatal) %>%
-  
-  # Drop all other rows
-  select(Incident_ID, fatal) %>%
-  
-  # Drop duplicate ids
-  filter(!duplicated(Incident_ID)) %>%
-  
-  # Join with incidents dataframe
-  right_join(incidents, by=c("Incident_ID"))
+## Retrieve data from Urban Institute's Education Data API
 
-# Export new dataframe
-write.csv(fatalities,
-          "../../../data/02-clean-data/SSDB/04-naive-bayes/fatalities.csv")
+```{r}
+# Add racial demographic data from Urban Institute's Education Data API
+for (yr in unique(incidents$Year)) {
+  for (ncessch_id in incidents[incidents$Year == yr,]$ncessch) {
+    # Retrieve data from the API
+    racial_demographics <- get_education_data(level = 'schools',
+                             source = 'ccd',
+                             topic = 'enrollment',
+                             subtopic = list('race'),
+                             filters = list(year = yr,
+                                            ncessch = ncessch_id),
+                             add_labels = TRUE)
+    if (nrow(racial_demographics) >= 1) {
+      racial_demographics_cleaned <- racial_demographics %>%
+        # Group by race
+        group_by(ncessch,race) %>%
+        summarise(enrollment = sum(enrollment, na.rm = TRUE)) %>%
+        
+        # Remove total enrollment row
+        # We will also remove the Unknown row since the number of unknown
+        # enrolled students is generally minimal and not all of the datasets
+        # have an "Unknown" row
+        filter(race != "Total" & race != "Unknown") %>%
+        
+        # Add percentage row
+        mutate(pct = enrollment / sum(enrollment),
+               race = gsub(" ", "_", race)) %>%
+        
+        # Pivot table so race is in columns
+        pivot_wider(names_from = race, values_from = c(pct, enrollment))
+      
+      # Save racial demographic data for the given ncessch_id and year to
+      # incidents table
+      incidents[
+        (incidents$ncessch == ncessch_id) & (incidents$Year == yr),
+        6:21
+      ] <- racial_demographics_cleaned[,-1]
+    }
+  }
+}
 ```
 
-# Classify whether or not a shooting was fatal
+# Import victim data to get fatality numbers
 ```{r}
-# Clean data for Naive Bayes
-fatalities_NB <- fatalities %>%
-  # Drop unnecessary columns
-  select(fatal, Quarter, State, School_Level, Location_Type, During_School,
-         Time_Period, Bullied, Domestic_Violence, Gang_Related, Preplanned)
+fatalities <- read.csv("../../../data/02-clean-data/SSDB/victim.csv") %>%
+  # Drop unneeded columns
+  select(Incident_ID, injury) %>%
+  # Convert injury column to factor
+  mutate(injury = as.factor(injury)) %>%
+  # Filter out non-fatalities
+  filter(injury == "Fatal") %>%
+  # Group by incidents and count fatalities
+  group_by(Incident_ID) %>%
+  summarise(fatalities = n())
 
-# All columns should be numeric
+# Write as csv for future use
+write.csv(fatalities, 
+          "../../../data/02-clean-data/SSDB/fatalities.csv",
+          row.names = FALSE)
+```
+
+
+```{r}
+nb_set <- incidents %>%
+  # Select columns of interest
+  select(Incident_ID,
+         Media_Attention,
+         School_Level,
+         pct_White,
+         pct_Black,
+         pct_Hispanic,
+         pct_Asian) %>%
+  # Filter out missing data
+  filter(Media_Attention != "",
+         School_Level != "null",
+         !is.na(pct_White),
+         !is.na(pct_Black),
+         !is.na(pct_Hispanic),
+         !is.na(pct_Asian),
+         # Also filter out non-high school, middle school, and elem school
+         # classifications for simplicity (only four don't belong to these
+         # categories)
+         (School_Level != "K-12" &
+            School_Level != "K-8" &
+            School_Level != "Other")) %>%
+  # Join fatalities data
+  left_join(fatalities, by = "Incident_ID") %>%
+  # Change missing values in fatalities column to 0
+  mutate(fatalities = ifelse(is.na(fatalities), 0, fatalities),
+         # Reorder levels for Media_Attention
+         Media_Attention = 
+           fct_relevel(Media_Attention,
+                       "Local",
+                       "Regional",
+                       "National",
+                       "International"),
+         # Consolidate Jr High and Middle in School_Level
+         School_Level = replace(School_Level,
+                                School_Level == "Junior High",
+                                "Middle"),
+         # Reorder levels and convert to numeric
+         School_Level = as.numeric(
+           fct_relevel(School_Level,
+                       "Elementary",
+                       "Middle",
+                       "High"))
+         )
+
+```
+
+## Perform the Naive Bayes Classification
+```{r}
+# Perform train-test split
+split <- sample.split(nb_set, SplitRatio = 0.7)
+train_cl <- subset(nb_set, split == "TRUE")
+test_cl <- subset(nb_set, split == "FALSE")
+ 
+# Scale features
+train_mus <- apply(train_cl[, 3:8], 2, mean)
+train_sds <- apply(train_cl[, 3:8], 2, sd)
+
+train_scale <- (train_cl[, 3:8] - train_mus) / train_sds
+test_scale <- (test_cl[, 3:8] - train_mus) / train_sds
+
+# Add target column back to scaled datasets
+train_scale$Media_Attention <- train_cl$Media_Attention
+test_scale$Media_Attention <- test_cl$Media_Attention
+ 
+# Fitting Naive Bayes Model to training dataset
+classifier_cl <- naiveBayes(Media_Attention ~ ., data = train_scale)
+classifier_cl
+ 
+# Predicting on test data
+y_pred <- predict(classifier_cl, newdata = test_scale)
+ 
+# Confusion Matrix
+coverage_levels <- c("Local", "Regional", "National", "International")
+cm <- table(
+  factor(test_cl$Media_Attention, levels = coverage_levels),
+  factor(y_pred, levels = coverage_levels)
+)
+cm
+ 
+# Model Evaluation
+confusionMatrix(cm)
+```
+
+
+```{r}
+table(nb_set$Media_Attention)
+```
+
+## Create baseline/randomized model
+```{r}
+# Randomize Media_Attention column
+train_scale_r <- train_scale
+train_scale_r$Media_Attention <- sample(train_scale$Media_Attention)
+
+# Fitting Naive Bayes Model to training dataset
+classifier_cl_r <- naiveBayes(Media_Attention ~ ., data = train_scale_r)
+classifier_cl_r
+ 
+# Predicting on test data
+y_pred_r <- predict(classifier_cl_r, newdata = test_scale)
+ 
+# Confusion Matrix
+cm_r <- table(
+  factor(test_cl$Media_Attention, levels = coverage_levels),
+  factor(y_pred_r, levels = coverage_levels)
+)
+cm_r
+ 
+# Model Evaluation
+confusionMatrix(cm_r)
 ```
 
 
@@ -64,9 +215,57 @@ fatalities_NB <- fatalities %>%
 
 
 
+```{r}
+library(corrplot)
+library(ggcorrplot)
+corrplot(cm)
+```
+
+```{r}
+library(yardstick)
+library(ggplot2)
+
+y_results <- data.frame(
+  obs = factor(test_cl$Media_Attention, levels = coverage_levels),
+  pred = factor(y_pred, levels = coverage_levels)
+)
+
+y_rand <- data.frame(
+  obs = factor(test_cl$Media_Attention, levels = coverage_levels),
+  pred = factor(y_pred_r, levels = coverage_levels)
+)
+
+cm_viz <- conf_mat(y_results, obs, pred)
+cm_viz_r <- conf_mat(y_rand, obs, pred)
 
 
+autoplot(cm_viz, type = "heatmap") +
+  scale_fill_gradient(low="#E1F1DA",high = "#228b22", limits=c(0, 30)) +
+  theme(
+    text = element_text(size=20),
+    axis.text = element_text(size = 16),
+    legend.position = "right"
+  ) +
+  ggtitle("Trained Naive Bayes Model")
 
+ggsave("../../../501-project-website/images/naive_bayes/confusion_matrix_trained2.png")
+```
 
+```{r}
+autoplot(cm_viz_r, type = "heatmap") +
+  scale_fill_gradient(low="#E1F1DA",high = "#228b22", limits=c(0, 30)) +
+  theme(
+    text = element_text(size=20),
+    axis.text = element_text(size = 16),
+    legend.position = "right"
+  ) +
+  ggtitle("Baseline Naive Bayes Model")
+
+ggsave("../../../501-project-website/images/naive_bayes/confusion_matrix_baseline2.png")
+```
+
+```{r}
+
+```
 
 
