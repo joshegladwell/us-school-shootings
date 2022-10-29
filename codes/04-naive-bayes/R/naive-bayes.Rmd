@@ -140,6 +140,13 @@ nb_set <- incidents %>%
                        "High"))
          )
 
+# Save nb_set for future classification tasks
+write.csv(
+  nb_set,
+  "./../../../data/02-clean-data/SSDB/News_Classification/news_classification.csv",
+  row.names = FALSE
+)
+
 ```
 
 ## Perform the Naive Bayes Classification
@@ -148,6 +155,18 @@ nb_set <- incidents %>%
 split <- sample.split(nb_set, SplitRatio = 0.7)
 train_cl <- subset(nb_set, split == "TRUE")
 test_cl <- subset(nb_set, split == "FALSE")
+
+# Save train_cl and test_cl for future classification problems
+write.csv(
+  train_cl,
+  "./../../../data/02-clean-data/SSDB/News_Classification/train_set.csv",
+  row.names = FALSE
+)
+write.csv(
+  test_cl,
+  "./../../../data/02-clean-data/SSDB/News_Classification/test_set.csv",
+  row.names = FALSE
+)
  
 # Scale features
 train_mus <- apply(train_cl[, 3:8], 2, mean)
@@ -159,6 +178,18 @@ test_scale <- (test_cl[, 3:8] - train_mus) / train_sds
 # Add target column back to scaled datasets
 train_scale$Media_Attention <- train_cl$Media_Attention
 test_scale$Media_Attention <- test_cl$Media_Attention
+
+# Save train_scale and test_scale for future classification problems
+write.csv(
+  train_scale,
+  "./../../../data/02-clean-data/SSDB/News_Classification/train_scale.csv",
+  row.names = FALSE
+)
+write.csv(
+  test_scale,
+  "./../../../data/02-clean-data/SSDB/News_Classification/test_scale.csv",
+  row.names = FALSE
+)
  
 # Fitting Naive Bayes Model to training dataset
 classifier_cl <- naiveBayes(Media_Attention ~ ., data = train_scale)

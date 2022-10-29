@@ -1,0 +1,212 @@
+---
+jupyter: python3
+format:
+  html:
+    code-fold: true
+---
+
+# Support Vector Machine
+The Support Vector Machine (SVM) model approaches classification problems by finding optimal hyperplanes in high-dimensional space that separate the observed classes in the data. Because SVM is primarily a binary classification method, we can adapt it to classifying multiple classes in the data by creating several hyperplanes with a One vs One approach or One vs All.  
+
+## Class distribution
+In this section, we take the same task as in the Naive Bayes section of predicting the level of news coverage for a given school shooting incident based on the school's education level (Elementary, Middle, High), racial demographics, and number of fatalities. With this data, we hope to predict the level of media coverage the incident received (Local, Regional, National, or International). After we import our data, we check the balance of labels in our dataset.
+
+```{python}
+import pandas as pd
+import json
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Read in data
+df_train = pd.read_csv('./../../data/02-clean-data/SSDB/News_Classification/train_set.csv')
+df_test = pd.read_csv('./../../data/02-clean-data/SSDB/News_Classification/test_set.csv')
+
+X_train = df_train.iloc[:,[2, 3, 7]]
+y_train = df_train.iloc[:, 1]
+X_test = df_test.iloc[:,[2, 3, 7]]
+y_test = df_test.iloc[:, 1]
+
+# Perform balance check
+balance_check = pd.DataFrame(
+    [
+        y_train.value_counts(sort=True).to_list(),
+        y_train.value_counts(sort=True, normalize=True).to_list()
+    ], 
+    index=['Count', 'Percentage'], columns=['Local', 'National', 'Regional', 'International']
+).T
+
+balance_check
+
+```
+
+We can see here that the classes are not well-balanced at all. This may be detrimental to the eventual performance of the model.
+
+### Feature Selection
+Because we approached an identical problem to this one in the Naive Bayes section, we can use the preprocessed data from that section for this section. However, one change we will make is to drop the columns for the percent of Black, Hispanic, and Asian students in the school. The reason for this is that there is inherent multicollinearity with these columns and the percent of white students in the school. Thus, they deliver roughly the same information and may be dropped.
+
+### Model Tuning
+Here we will train an SVM model using linear kernels, polynomial kernels, RBF kernels, and sigmoid kernels. We will accept the model that performs best among these options.
+
+```{python}
+target_names = df_train['Media_Attention'].unique().tolist()
+
+clf = SVC(C=0.45, kernel='linear')
+clf.fit(X_train, y_train)
+
+yp_train = clf.predict(X_train)
+yp_test = clf.predict(X_test)
+
+# Calculate the confusion matrix and classification report for the train and test data. 
+cm_train = confusion_matrix(y_train, yp_train, labels=clf.classes_)
+cm_test = confusion_matrix(y_test, yp_test, labels=clf.classes_)
+
+# Save the results in a data frame. 
+clf_report_linear = classification_report(y_test, yp_test, target_names=target_names, output_dict=True)
+clf_report_linear = pd.DataFrame(clf_report_linear).transpose()
+
+clf_report_linear
+
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+
+
+# Plot individual confusion matrices for website
+plt.rcParams.update({'font.size': 40})
+
+fig_baseline, ax_baseline = plt.subplots(figsize=(20, 13))
+
+sns.heatmap(cm_test, annot=True, fmt='g', ax=ax_baseline, vmin=0, vmax=35, cmap='Greens')
+
+# Specify axis titles
+ax_baseline.set_title("SVM with Linear Kernels", fontdict={'fontsize': 50})
+
+# Specify labels and ticks
+ax_baseline.set_xlabel('Predicted label')
+ax_baseline.set_ylabel('True label')
+ax_baseline.xaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+ax_baseline.yaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+
+plt.savefig('./../../501-project-website/images/svm/cm_linear.png')
+```
+
+```{python}
+clf = SVC(C=0.45, kernel='poly', degree=3)
+clf.fit(X_train, y_train)
+
+yp_train = clf.predict(X_train)
+yp_test = clf.predict(X_test)
+
+# Calculate the confusion matrix and classification report for the train and test data. 
+cm_train = confusion_matrix(y_train, yp_train, labels=clf.classes_)
+cm_test = confusion_matrix(y_test, yp_test, labels=clf.classes_)
+
+# Save the results in a data frame. 
+clf_report_linear = classification_report(y_test, yp_test, target_names=target_names, output_dict=True)
+clf_report_linear = pd.DataFrame(clf_report_linear).transpose()
+
+clf_report_linear
+
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+
+
+# Plot individual confusion matrices for website
+plt.rcParams.update({'font.size': 40})
+
+fig_baseline, ax_baseline = plt.subplots(figsize=(20, 13))
+
+sns.heatmap(cm_test, annot=True, fmt='g', ax=ax_baseline, vmin=0, vmax=35, cmap='Greens')
+
+# Specify axis titles
+ax_baseline.set_title("SVM with Polynomial Kernels", fontdict={'fontsize': 50})
+
+# Specify labels and ticks
+ax_baseline.set_xlabel('Predicted label')
+ax_baseline.set_ylabel('True label')
+ax_baseline.xaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+ax_baseline.yaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+
+plt.savefig('./../../501-project-website/images/svm/cm_poly.png')
+```
+
+```{python}
+clf = SVC(C=0.45, kernel='rbf')
+clf.fit(X_train, y_train)
+
+yp_train = clf.predict(X_train)
+yp_test = clf.predict(X_test)
+
+# Calculate the confusion matrix and classification report for the train and test data. 
+cm_train = confusion_matrix(y_train, yp_train, labels=clf.classes_)
+cm_test = confusion_matrix(y_test, yp_test, labels=clf.classes_)
+
+# Save the results in a data frame. 
+clf_report_linear = classification_report(y_test, yp_test, target_names=target_names, output_dict=True)
+clf_report_linear = pd.DataFrame(clf_report_linear).transpose()
+
+clf_report_linear
+
+
+# Plot individual confusion matrices for website
+plt.rcParams.update({'font.size': 40})
+
+fig_baseline, ax_baseline = plt.subplots(figsize=(20, 13))
+
+sns.heatmap(cm_test, annot=True, fmt='g', ax=ax_baseline, vmin=0, vmax=35, cmap='Greens')
+
+# Specify axis titles
+ax_baseline.set_title("SVM with RBF Kernels", fontdict={'fontsize': 50})
+
+# Specify labels and ticks
+ax_baseline.set_xlabel('Predicted label')
+ax_baseline.set_ylabel('True label')
+ax_baseline.xaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+ax_baseline.yaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+
+plt.savefig('./../../501-project-website/images/svm/cm_rbf.png')
+```
+
+
+```{python}
+clf = SVC(C=0.45, kernel='sigmoid')
+clf.fit(X_train, y_train)
+
+yp_train = clf.predict(X_train)
+yp_test = clf.predict(X_test)
+
+# Calculate the confusion matrix and classification report for the train and test data. 
+cm_train = confusion_matrix(y_train, yp_train, labels=clf.classes_)
+cm_test = confusion_matrix(y_test, yp_test, labels=clf.classes_)
+
+# Save the results in a data frame. 
+clf_report_linear = classification_report(y_test, yp_test, target_names=target_names, output_dict=True)
+clf_report_linear = pd.DataFrame(clf_report_linear).transpose()
+
+clf_report_linear
+
+
+
+# Plot individual confusion matrices for website
+plt.rcParams.update({'font.size': 40})
+
+fig_baseline, ax_baseline = plt.subplots(figsize=(20, 13))
+
+sns.heatmap(cm_test, annot=True, fmt='g', ax=ax_baseline, vmin=0, vmax=35, cmap='Greens')
+
+# Specify axis titles
+ax_baseline.set_title("SVM with Sigmoid Kernels", fontdict={'fontsize': 50})
+
+# Specify labels and ticks
+ax_baseline.set_xlabel('Predicted label')
+ax_baseline.set_ylabel('True label')
+ax_baseline.xaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+ax_baseline.yaxis.set_ticklabels(['Int', 'Loc', 'Nat', 'Reg'])
+
+plt.savefig('./../../501-project-website/images/svm/cm_sigmoid.png')
+```
+
+### Final Results
+Unfortunately, all of these approaches perform roughly the same. They primarily favor prediction that the incident was locally covered. This is almost certainly due to the imbalance of classes that we see above.
+
+### Conclusions
+All in all, this analysis isn't very informative. This is likely due to the low quality of data. It would be worthwhile in future work to return to this modeling approach with a cleaner, more balanced dataset.

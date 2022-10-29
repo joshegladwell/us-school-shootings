@@ -1,0 +1,178 @@
+---
+jupyter: python3
+format:
+  html:
+    code-fold: true
+---
+
+# Decision Trees
+### Methods
+Decision trees are a common machine learning technique for both classification and regression problems. In classification problems, we use data to make a prediction of discrete possibilities (for example, whether it will be rainy, snowy, sunny, or cloudy on a given day). On the other hand, in regression problems we use data to make a numerical prediction (for example, the high temperature for a given day). In this scenario, (as in the Naive Bayes section of this project), we are dealing with a classification problem.  
+  
+Decision trees identify patterns in the data to construct a hierarchical tree with a single "root node" at the top, and layers of nodes branching down into leaves. The leaf nodes are the end points in the decision tree and determine the classification of the given data.  
+  
+For example, consider a decision tree designed to classify weather data. Suppose we have features such as the previous day's temparature, air pressure, humidity, or other features that may contribute to an accurate prediction of the next day's forecast. The root node may have a "decision" such as whether or not the temperature from the given input was greater than 70 degrees Fahrenheit. If the condition is met, we traverse left down the tree to the next node, or we traverse right if it is not met. This process continues until we reach a leaf node that finally declares the predicted label (sunny, rainy, etc.) for the given input.  
+  
+### Class distribution
+In this section, we take the same task as in the Naive Bayes section of predicting whether a given tweet about a school shooting is expressing an opinion about the incident or conveying news about the incident. After we import our data, we check the balance of labels in our dataset.
+
+```{python}
+import pandas as pd
+import numpy as np
+import json
+from sklearn import tree
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Read in data
+df_train = pd.read_csv('./../../../large_data/03-classification-model-data/Twitter/df_train.tsv', sep='\t')
+df_test = pd.read_csv('./../../../large_data/03-classification-model-data/Twitter/df_test.tsv', sep='\t')
+
+bow_train = np.array(pd.read_csv('./../../../large_data/03-classification-model-data/Twitter/bow_train.csv'))
+bow_test = np.array(pd.read_csv('./../../../large_data/03-classification-model-data/Twitter/bow_test.csv'))
+
+vocab_train = json.load(open('./../../../large_data/03-classification-model-data/Twitter/vocab_train.json'))
+
+balance_check = pd.DataFrame(
+    [
+        df_train['labels'].value_counts(sort=True).to_list(),
+        df_train['labels'].value_counts(sort=True, normalize=True).to_list()
+    ], 
+    index=['Count', 'Percentage'], columns=['Opinion', 'News']
+).T
+
+balance_check
+```
+
+As we can see, the data is very well-balanced, meaning the number of "Opinion" tweets is roughly equal to the number of "News" tweets. This is desirable for the algorithm results.  
+  
+### Feature Selection
+Because we performed this analysis in the Naive Bayes section, there is no need for further feature selection or data preprocessing.  
+  
+### Model Tuning
+We will now determine the optimal depth for the decision tree by training 20 decision trees at varying maximum depths.
+
+```{python}
+test_results=[]
+train_results=[]
+
+for num_layer in range(1, 20):
+    model = tree.DecisionTreeClassifier(max_depth=num_layer)
+    model = model.fit(bow_train, df_train['labels'])
+
+    yp_train=model.predict(bow_train)
+    yp_test=model.predict(bow_test)
+
+    # print(y_pred.shape)
+    test_results.append([num_layer,accuracy_score(df_test['labels'], yp_test),recall_score(df_test['labels'], yp_test,pos_label='news'),recall_score(df_test['labels'], yp_test,pos_label='op')])
+    train_results.append([num_layer,accuracy_score(df_train['labels'], yp_train),recall_score(df_train['labels'], yp_train,pos_label='news'),recall_score(df_train['labels'], yp_train,pos_label='op')])
+
+test_results=[]
+train_results=[]
+
+for num_layer in range(1, 20):
+    model = tree.DecisionTreeClassifier(max_depth=num_layer)
+    model = model.fit(bow_train, df_train['labels'])
+
+    yp_train=model.predict(bow_train)
+    yp_test=model.predict(bow_test)
+
+    # print(y_pred.shape)
+    test_results.append([num_layer,accuracy_score(df_test['labels'], yp_test),recall_score(df_test['labels'], yp_test,pos_label='news'),recall_score(df_test['labels'], yp_test,pos_label='op')])
+    train_results.append([num_layer,accuracy_score(df_train['labels'], yp_train),recall_score(df_train['labels'], yp_train,pos_label='news'),recall_score(df_train['labels'], yp_train,pos_label='op')])
+
+
+test_results_df = pd.DataFrame(test_results, columns=['depth', 'accuracy', 'recall_0', 'recall_1']).set_index('depth')
+train_results_df = pd.DataFrame(train_results, columns=['depth', 'accuracy', 'recall_0', 'recall_1']).set_index('depth')
+
+xlabel = 'Number of layers in decision tree'
+ylabel = 'Training (blue) and test (orange)'
+
+# ACCURACY
+fig1, ax1 = plt.subplots(figsize=(20, 13))
+
+sns.lineplot(x=train_results_df.index, y=train_results_df['accuracy'], marker='o', ax=ax1)
+sns.lineplot(x=test_results_df.index, y=test_results_df['accuracy'], marker='o', ax=ax1)
+ax1.set_xlabel(xlabel)
+ax1.set_ylabel("ACCURACY (Y = News): " + ylabel)
+
+plt.show()
+
+# RECALL Y=0
+fig2, ax2 = plt.subplots(figsize=(20, 13))
+
+sns.lineplot(x=train_results_df.index, y=train_results_df['recall_0'], marker='o', ax=ax2)
+sns.lineplot(x=test_results_df.index, y=test_results_df['recall_0'], marker='o', ax=ax2)
+ax2.set_xlabel(xlabel)
+ax2.set_ylabel("RECALL (Y = News): " + ylabel)
+
+plt.show()
+
+# RECALL Y=1
+fig3, ax3 = plt.subplots(figsize=(20, 13))
+
+sns.lineplot(x=train_results_df.index, y=train_results_df['recall_1'], marker='o', ax=ax3)
+sns.lineplot(x=test_results_df.index, y=test_results_df['recall_1'], marker='o', ax=ax3)
+ax3.set_xlabel(xlabel)
+ax3.set_ylabel("RECALL (Y = Opinion): " + ylabel)
+
+plt.show()
+```
+
+As we can see in the plots above, the test set generally does not improve with deeper decision trees. There is a slight improvement in recall of the opinion class at a depth of 5, but that is the only indication of improvement. Therefore, we will train the model at a maximum depth of 5.
+
+### Final Results
+Here we will train the final decision tree model.
+
+```{python}
+model = tree.DecisionTreeClassifier(max_depth=5)
+model = model.fit(bow_train, df_train['labels'])
+
+yp_train = model.predict(bow_train)
+yp_test = model.predict(bow_test)
+
+target_names = ['News', 'Opinion']
+
+# Calculate the confusion matrix and classification report for the train and test data. 
+cm_train = confusion_matrix(df_train['labels'], yp_train, labels=model.classes_)
+cm_test = confusion_matrix(df_test['labels'], yp_test, labels=model.classes_)
+
+# Save the results in a data frame. 
+clf_report_linear_train = classification_report(df_train['labels'], yp_train, target_names=target_names, output_dict=True)
+clf_report_linear_train = pd.DataFrame(clf_report_linear_train).transpose()
+
+clf_report_linear_train
+
+clf_report_linear_test = classification_report(df_test['labels'], yp_test, target_names=target_names, output_dict=True)
+clf_report_linear_test = pd.DataFrame(clf_report_linear_test).transpose()
+
+clf_report_linear_test
+
+# Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.
+
+# Plot individual confusion matrices for website
+plt.rcParams.update({'font.size': 40})
+
+fig, ax = plt.subplots(figsize=(20, 13))
+
+sns.heatmap(cm_test, annot=True, fmt='g', ax=ax, vmin=0, vmax=3500, cmap='Greens')
+
+# Specify axis titles
+ax.set_title("Decision Tree Model", fontdict={'fontsize': 50})
+
+# Specify labels and ticks
+ax.set_xlabel('Predicted label')
+ax.set_ylabel('True label')
+ax.xaxis.set_ticklabels(['News', 'Opinion'])
+ax.yaxis.set_ticklabels(['News', 'Opinion'])
+
+plt.savefig('./../../501-project-website/images/dt/cm.png')
+```
+
+Clearly there is a level of overfit in the decision tree model, even at a low maximum depth. Considering the hyperparameter tuning plots, it seems this is purely an issue with using decision trees for this specific problem. They do not seem to be well-optimized for the nature of this problem.
+
+### Conclusions
+All in all, this analysis went poorly. No matter how much tuning we performed on the decision tree model, it was never able to perform accurate predictions of the nature of a given tweet. It tended to prefer predicting a tweet as an opinion tweet, even when it was not.
+
+In the future, I would stick to Naive Bayes algorithms for this kind of analysis.
