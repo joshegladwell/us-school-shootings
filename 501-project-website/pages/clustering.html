@@ -52,6 +52,12 @@
             <h3>Density-Based Spatial Clustering of Applications with Noise (DBSCAN)</h3>
             <p>DBSCAN is an alternative clustering algorithm that is based on grouping observations by their density. In this case, density refers to the concentration of observations in a relatively small area of the space. In DBSCAN, outliers are omitted from clusters because they are, by definition, isolated from high-density clusters of data.</p>
             <p>The fundamental difference between DBSCAN and K-Means is that DBSCAN is very good at identifying clusters of data that are not linear / do not follow a Gaussian distribution. Consider the graphic below, published by Scikit Learn, illustrating the results of various clustering algorithms on toy datasets of different shapes.</p>
+            <img src="../images/clustering/scikit-learn_clustering.png" width="1200">
+            <p>As we can see, DBSCAN is much better at clustering irregular shapes than K-Means.</p>
+
+            <h3>Hierarchical Clustering</h3>
+            <p>Hierarchical clustering, unlike the clustering algorithms defined above (which are considered partitional clustering algorithms), is an approach to clustering that assigns data to different "sub-clusters" at different levels of the hierarchy. For example, at the highest levels, the data are separated into few clusters, but the clusters are large. At the lower levels of the hierarchy, the clusters get smaller but are more plentiful.</p>
+            <p>Oftentimes, the size and number of clusters at each hierarchy can effectively be illustrated in a dendrogram. This approach allows the user to determine the optimal number/size of clusters "at a glance"--depending on the use case of the analysis.</p>
         </div>
     </body>
 </html>
