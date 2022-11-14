@@ -58,6 +58,10 @@
             <h3>Hierarchical Clustering</h3>
             <p>Hierarchical clustering, unlike the clustering algorithms defined above (which are considered partitional clustering algorithms), is an approach to clustering that assigns data to different "sub-clusters" at different levels of the hierarchy. For example, at the highest levels, the data are separated into few clusters, but the clusters are large. At the lower levels of the hierarchy, the clusters get smaller but are more plentiful.</p>
             <p>Oftentimes, the size and number of clusters at each hierarchy can effectively be illustrated in a dendrogram. This approach allows the user to determine the optimal number/size of clusters "at a glance"--depending on the use case of the analysis.</p>
+
+            <h2>Methods</h2>
+            <h3>Data Selection</h3>
+            <p>Because we do not consider any labels in clustering, we are free to use the entire set of tweets in this analysis. Using <a href="./../../codes/07-clustering/bow_generator.py">this</a> Python script, we create a bag of words model for all of the tweets (rather than only tweets with hashtags).</p>
         </div>
     </body>
 </html>
