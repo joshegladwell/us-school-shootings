@@ -126,13 +126,17 @@
 
             <h3>Final results</h3>
             <p>We now perform a final clustering using our optimal K and save our results. Using this optimal model, we can see below the number of tweets that the algorithm assigns to each cluster. By itself, this isn't terribly insightful, but it may provide more insight once we identify the possible patterns behind the clusters.</p>
-            <img src="../images/clustering/cluster_counts.png">
+            <img src="../images/clustering/cluster_counts.png" width="1200">
 
             <h2>Results</h2>
-            <p></p>
+            <p>Perhaps one of the most insightful observatios we can make about the clusters is how they compare to the hashtag-based labels that we used for the Na&iuml;ve Bayes algorithm. Do the clusters act as subcategories within the scope of news vs opinion tweets? Or is there more overlap?</p>
+            <img src="../images/clustering/cluster_counts_bylabel.png" width="1200">
+            <p>As we can see, there is indeed very heavy overlap between the clusters assigned by K-Means and the hashtag-based News/Opinion labels. Cluster 3 seems to be very strongly correlated with the opinion-based tweets while Cluster 7 seems to be correlated with news-based tweets.</p>
+            <p>At a later date, we will return to this analysis and examine the clusters at a much closer level to identify any patterns distinguishing the clusters aside from the news vs. opinion distinction.</p>
 
             <h2>Conclusions</h2>
-            <p></p>
+            <p>Unlike most of the previous analytical approaches of this project (Na&iuml;ve Bayes, Decision Trees, and SVM) in which we try to make predictions about the data, this section attempts to learn more about the data without any associated predictions. In truth, this project is best suited for this sort of non-predictive analysis. It allows us to gain insights about the data, which is the main goal of this project.</p>
+            <p>This analysis further validated the results of the Na&iuml;ve Bayes algorithm by confirming the assumptions behind labeling tweets as being opinion-based or news-based depending on their hashtags. A possible next step for this analysis would be to cluster all 2.5 million tweets and track the levels of how many tweets occur in each cluster over time.</p>
 
             <h2>References</h2>
             <ol>
