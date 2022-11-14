@@ -36,7 +36,22 @@
         </div>
         <div class="text">
             <h1>Clustering</h1>
-            This part of the project is in progress.
+            
+            <h2>Introduction</h2>
+            <p>All of our previous analysis of tweets relating to school shootings have been limited to tweets containing hashtags. We operated under the assumption that a hashtag could act as a proxy for a label by grouping hashtags commonly associated with news tweets and grouping hashtags commonly associated with tweets expressing opinions. Clearly this approach has several shortcomings--most notably the lack of practical significance.</p>
+            <p>In this analysis, we will perform clustering to identify groups in the tweets that hopefully transcend the less-interesting binary classification of tweets as being news-oriented or opinion-oriented. We expect that our clustering analysis will split tweets by their emotional sentiment (perhaps empathetic/critical) or by their political orientation (tighter gun laws / looser gun laws).</p>
+
+            <h2>Theory</h2>
+            <p>Clustering is a field of unsupervised machine learning that groups observations in data based on how closely they are located to each other. As a brief introduction, we discuss a few different clustering techniques below:</p>
+
+            <h3>K-Means</h3>
+            <p>Not to be confused with K Nearest Neighbors, K-Means is a clustering algorithm that accepts a parameter $K$ determining the number of clusters to identify in the data. For each cluster, a centroid is determined which serves as the arbitrary center of the cluster. The centroid can be calculated using mean, median, or other metrics to determine the center of the observations.</p>
+            <p>The algorithm begins by selecting K random arbitrary centroids in the space. From there, it iteratively updates to represent the optimal center for K clusters in the dataset based on some distance metric (usually Euclidean distance). Once the iterations no longer update the centroids, the centroids are considered to have converged.</p>
+            <p>K-Means clustering is ideal for clustering data that follow a Gaussian distribution. Gaussian distributions appear as a circle or oval in 2-dimensional space and as spherical or ovaline clouds in 3-dimensional space. Dimensions greater than three can be difficult to visualize, so often the best approach for determining the optimal clustering algorithm is to try multiple ones.</p>
+
+            <h3>Density-Based Spatial Clustering of Applications with Noise (DBSCAN)</h3>
+            <p>DBSCAN is an alternative clustering algorithm that is based on grouping observations by their density. In this case, density refers to the concentration of observations in a relatively small area of the space. In DBSCAN, outliers are omitted from clusters because they are, by definition, isolated from high-density clusters of data.</p>
+            <p>The fundamental difference between DBSCAN and K-Means is that DBSCAN is very good at identifying clusters of data that are not linear / do not follow a Gaussian distribution. Consider the graphic below, published by Scikit Learn, illustrating the results of various clustering algorithms on toy datasets of different shapes.</p>
         </div>
     </body>
 </html>
