@@ -64,11 +64,69 @@
             <p>Because we do not consider any labels in clustering, we are free to use the entire set of tweets in this analysis. Using <a href="https://github.com/anly501/anly-501-project-joshegladwell/blob/main/codes/07-clustering/bow_generator.py" target="_blank">this</a> Python script, we attempt to create a bag of words model for a random selection of 50,000 tweets (rather than only tweets with hashtags). However, due to computing limitations we will settle for the same BOW model that we have used in our previous analyses.</p>
 
             <h3>Hyper-parameter tuning</h3>
-            <p>Using K-Means, we arrive at the following graph for determining the optimal K number of clusters for our Twitter data. Using the elbow method, we determine that the optimal number of clusters, based on the distortions and inertia of the model, is K=?.</p>
+            <p>Using K-Means, we arrive at the following graphs for determining the optimal K number of clusters for our Twitter data. Using the elbow method, we determine that the optimal number of clusters, based on the distortions and inertia of the model, is K=?.</p>
+            <table class="center-table">
+                <tr>
+                    <th>Cluster</th>
+                    <th>Distortion</th>
+                    <th>Inertia</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>3.646</td>
+                    <td>562,647</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>3.595</td>
+                    <td>548,418</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>3.558</td>
+                    <td>540,262</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>3.546</td>
+                    <td>533,720</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>3.506</td>
+                    <td>525,581</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>3.495</td>
+                    <td>519,913</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>3.450</td>
+                    <td>510,538</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>3.457</td>
+                    <td>510,362</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>3.436</td>
+                    <td>507,861</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>3.425</td>
+                    <td>504,381</td>
+                </tr>
+            </table>
+            <img src="../images/clustering/elbow-graph.png" width="1200">
 
             <h3>Final results</h3>
-            <p>We now perform a final clustering using our optimal K and save our results.</p>
-            <p>We can see below the number of tweets for each cluster.</p>
+            <p>We now perform a final clustering using our optimal K and save our results. Using this optimal model, we can see below the number of tweets that the algorithm assigns to each cluster. By itself, this isn't terribly insightful, but it may provide more insight once we identify the possible patterns behind the clusters.</p>
+            <p></p>
 
             <h2>Results</h2>
             <p></p>
