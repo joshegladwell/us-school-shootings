@@ -64,7 +64,7 @@
             <p>Because we do not consider any labels in clustering, we are free to use the entire set of tweets in this analysis. Using <a href="https://github.com/anly501/anly-501-project-joshegladwell/blob/main/codes/07-clustering/bow_generator.py" target="_blank">this</a> Python script, we attempt to create a bag of words model for a random selection of 50,000 tweets (rather than only tweets with hashtags). However, due to computing limitations we will settle for the same BOW model that we have used in our previous analyses.</p>
 
             <h3>Hyper-parameter tuning</h3>
-            <p>Using K-Means, we arrive at the following graphs for determining the optimal K number of clusters for our Twitter data. Using the elbow method, we determine that the optimal number of clusters, based on the distortions and inertia of the model, is K=?.</p>
+            <p>Using K-Means, we arrive at the following graphs for determining the optimal K number of clusters for our Twitter data. Using the elbow method, we determine that an optimal number of clusters, based on the distortions and inertia of the model, is K=7.</p>
             <table class="center-table">
                 <tr>
                     <th>Cluster</th>
@@ -126,7 +126,7 @@
 
             <h3>Final results</h3>
             <p>We now perform a final clustering using our optimal K and save our results. Using this optimal model, we can see below the number of tweets that the algorithm assigns to each cluster. By itself, this isn't terribly insightful, but it may provide more insight once we identify the possible patterns behind the clusters.</p>
-            <p></p>
+            <img src="../images/clustering/cluster_counts.png">
 
             <h2>Results</h2>
             <p></p>
