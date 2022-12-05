@@ -1,496 +1,89 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html>
+    
+    <head>
+        <title>Decision Trees</title>
 
-<meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.247">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<link rel="stylesheet" href="../styles.css">
-
-<title>Decision Trees</title>
-<style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
+        <!-- point to css stylesheet -->
+        <link rel="stylesheet" href="../styles.css">
+    </head>
 
 
-<script src="dt_files/libs/clipboard/clipboard.min.js"></script>
-<script src="dt_files/libs/quarto-html/quarto.js"></script>
-<script src="dt_files/libs/quarto-html/popper.min.js"></script>
-<script src="dt_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="dt_files/libs/quarto-html/anchor.min.js"></script>
-<link href="dt_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="dt_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="dt_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="dt_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="dt_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
-
-
-</head>
-
-<body>
-    <div class="header">
-        <div class="header-center">
-            <a class="logo" href="../index.html">jg</a>
+    <body>
+        <div class="header">
+            <div class="header-center">
+                <a class="logo" href="../index.html">jg</a>
+            </div>
+            <div class="header-sub">
+                Joshua Gladwell
+            </div>
+            <div class="header-tabs">
+                <a href="./about_me.html">About Me</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a>
+                <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a>
+                <a href="./introduction.html">Introduction</a>
+                <a href="./data_gathering.html">Data Gathering</a>
+                <a href="./data_cleaning.html">Data Cleaning</a>
+                <a href="./exploring_data.html">Exploring Data</a>
+                <a href="./naive_bayes.html">Na&iuml;ve Bayes</a>
+                <a href="./decision_trees.html">Decision Trees</a>
+                <a href="./svm.html">SVM</a>
+                <a href="./clustering.html">Clustering</a>
+                <a href="./arm_networking.html">ARM and Networking</a>
+                <a href="./conclusions.html">Conclusions</a>
+            </div>
         </div>
-        <div class="header-sub">
-            Joshua Gladwell
+        <div class="text">
+            <h1>Decision Trees</h1>
+
+            <h2>Methods</h2>
+            <p>Decision trees are a common machine learning technique for both classification and regression problems. In classification problems, we use data to make a prediction of discrete possibilities (for example, whether it will be rainy, snowy, sunny, or cloudy on a given day). On the other hand, in regression problems we use data to make a numerical prediction (for example, the high temperature for a given day). In this scenario, (as in the Na&iuml;ve Bayes section of this project), we are dealing with a classification problem.</p>
+            <p>Decision trees identify patterns in the data to construct a hierarchical tree with a single "root node" at the top, and layers of nodes branching down into leaves. The leaf nodes are the end points in the decision tree and determine the classification of the given data.</p>
+            <p>For example, consider a decision tree designed to classify weather data. Suppose we have features such as the previous day's temparature, air pressure, humidity, or other features that may contribute to an accurate prediction of the next day's forecast. The root node may have a "decision" such as whether or not the temperature from the given input was greater than 70 degrees Fahrenheit. If the condition is met, we traverse left down the tree to the next node, or we traverse right if it is not met. This process continues until we reach a leaf node that finally declares the predicted label (sunny, rainy, etc.) for the given input.</p>
+
+            <h2>Class Distribution</h2>
+            <p>In this section, we take the same task as in the Na&iuml;ve Bayes section of predicting whether a given tweet about a school shooting is expressing an opinion about the incident or conveying news about the incident. After we import our data, we check the balance of labels in our dataset:</p>
+
+            <table class="center-table">
+                <tr>
+                    <th></th>
+                    <th>Count</th>
+                    <th>Percentage</th>
+                </tr>
+                <tr>
+                    <th>Opinion</th>
+                    <td>16,944</td>
+                    <td>53.7%</td>
+                </tr>
+                <tr>
+                    <th>News</th>
+                    <td>14,580</td>
+                    <td>46.3%</td>
+                </tr>
+            </table>
+
+            <p>As we can see, the data is very well-balanced, meaning the number of "Opinion" tweets is roughly equal to the number of "News" tweets. This is desirable for the algorithm results.</p>
+
+            <h2>Feature Selection</h2>
+            <p>Because we performed this analysis in the Naive Bayes section, there is no need for further feature selection or data preprocessing.</p>
+
+            <h2>Model Tuning</h2>
+            <p>We will now determine the optimal depth for the decision tree by training 20 decision trees at varying maximum depths.</p>
+            <img src="../images/dt/accuracy.png" width="1200">
+            <img src="../images/dt/recallY0.png" width="1200">
+            <img src="../images/dt/recallY1.png" width="1200">
+
+            <p>As we can see in the plots above, the test set generally does not improve with deeper decision trees. There is a slight improvement in recall of the opinion class at a depth of 5, but that is the only indication of improvement. Therefore, we will train the model at a maximum depth of 5.</p>
+
+            <h2>Final Results</h2>
+            <p>Using the maximum depth of 5, we train our final model.</p>
+            <img src="../images/dt/cm.png" width="1200">
+
+            <p>Clearly there is a level of overfit in the decision tree model, even at a low maximum depth. Considering the hyperparameter tuning plots, it seems this is purely an issue with using decision trees for this specific problem. They do not seem to be well-optimized for the nature of this problem.</p>
+
+            <h2>Conclusions</h2>
+            <p>All in all, this analysis went poorly. No matter how much tuning we performed on the decision tree model, it was never able to perform accurate predictions of the nature of a given tweet. It tended to prefer predicting a tweet as an opinion tweet, even when it was not.</p>
+            <p>In the future, I would stick to Na&iuml;ve Bayes algorithms for this kind of analysis.</p>
         </div>
-        <div class="header-tabs">
-            <a href="./about_me.html">About Me</a>
-            <a href="https://github.com/anly501/anly-501-project-joshegladwell" target="_blank">Code</a>
-            <a href="https://github.com/anly501/anly-501-project-joshegladwell/tree/main/data" target="_blank">Data</a>
-            <a href="./introduction.html">Introduction</a>
-            <a href="./data_gathering.html">Data Gathering</a>
-            <a href="./data_cleaning.html">Data Cleaning</a>
-            <a href="./exploring_data.html">Exploring Data</a>
-            <a href="./naive_bayes.html">Na&iuml;ve Bayes</a>
-            <a href="./decision_trees.html">Decision Trees</a>
-            <a href="./svm.html">SVM</a>
-            <a href="./clustering.html">Clustering</a>
-            <a href="./arm_networking.html">ARM and Networking</a>
-            <a href="./conclusions.html">Conclusions</a>
-        </div>
-    </div>
-<div class="fullcontent">
-
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
-<main class="content" id="quarto-document-content">
-
-<section id="decision-trees" class="level1">
-<h1>Decision Trees</h1>
-<section id="methods" class="level3">
-<h3 class="anchored" data-anchor-id="methods">Methods</h3>
-<p>Decision trees are a common machine learning technique for both classification and regression problems. In classification problems, we use data to make a prediction of discrete possibilities (for example, whether it will be rainy, snowy, sunny, or cloudy on a given day). On the other hand, in regression problems we use data to make a numerical prediction (for example, the high temperature for a given day). In this scenario, (as in the Naive Bayes section of this project), we are dealing with a classification problem.</p>
-<p>Decision trees identify patterns in the data to construct a hierarchical tree with a single “root node” at the top, and layers of nodes branching down into leaves. The leaf nodes are the end points in the decision tree and determine the classification of the given data.</p>
-<p>For example, consider a decision tree designed to classify weather data. Suppose we have features such as the previous day’s temparature, air pressure, humidity, or other features that may contribute to an accurate prediction of the next day’s forecast. The root node may have a “decision” such as whether or not the temperature from the given input was greater than 70 degrees Fahrenheit. If the condition is met, we traverse left down the tree to the next node, or we traverse right if it is not met. This process continues until we reach a leaf node that finally declares the predicted label (sunny, rainy, etc.) for the given input.</p>
-</section>
-<section id="class-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="class-distribution">Class distribution</h3>
-<p>In this section, we take the same task as in the Naive Bayes section of predicting whether a given tweet about a school shooting is expressing an opinion about the incident or conveying news about the incident. After we import our data, we check the balance of labels in our dataset.</p>
-<div class="cell" data-execution_count="1">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> tree</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix, ConfusionMatrixDisplay, accuracy_score, precision_score, recall_score</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df_train <span class="op">=</span> pd.read_csv(<span class="st">'./../../../large_data/03-classification-model-data/Twitter/df_train.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>df_test <span class="op">=</span> pd.read_csv(<span class="st">'./../../../large_data/03-classification-model-data/Twitter/df_test.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>bow_train <span class="op">=</span> np.array(pd.read_csv(<span class="st">'./../../../large_data/03-classification-model-data/Twitter/bow_train.csv'</span>))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>bow_test <span class="op">=</span> np.array(pd.read_csv(<span class="st">'./../../../large_data/03-classification-model-data/Twitter/bow_test.csv'</span>))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>vocab_train <span class="op">=</span> json.load(<span class="bu">open</span>(<span class="st">'./../../../large_data/03-classification-model-data/Twitter/vocab_train.json'</span>))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>balance_check <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        df_train[<span class="st">'labels'</span>].value_counts(sort<span class="op">=</span><span class="va">True</span>).to_list(),</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        df_train[<span class="st">'labels'</span>].value_counts(sort<span class="op">=</span><span class="va">True</span>, normalize<span class="op">=</span><span class="va">True</span>).to_list()</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    ], </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>[<span class="st">'Count'</span>, <span class="st">'Percentage'</span>], columns<span class="op">=</span>[<span class="st">'Opinion'</span>, <span class="st">'News'</span>]</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>).T</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>balance_check</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display" data-execution_count="1">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Count</th>
-      <th>Percentage</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Opinion</th>
-      <td>16944.0</td>
-      <td>0.537495</td>
-    </tr>
-    <tr>
-      <th>News</th>
-      <td>14580.0</td>
-      <td>0.462505</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-</div>
-<p>As we can see, the data is very well-balanced, meaning the number of “Opinion” tweets is roughly equal to the number of “News” tweets. This is desirable for the algorithm results.</p>
-</section>
-<section id="feature-selection" class="level3">
-<h3 class="anchored" data-anchor-id="feature-selection">Feature Selection</h3>
-<p>Because we performed this analysis in the Naive Bayes section, there is no need for further feature selection or data preprocessing.</p>
-</section>
-<section id="model-tuning" class="level3">
-<h3 class="anchored" data-anchor-id="model-tuning">Model Tuning</h3>
-<p>We will now determine the optimal depth for the decision tree by training 20 decision trees at varying maximum depths.</p>
-<div class="cell" data-execution_count="2">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>test_results<span class="op">=</span>[]</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>train_results<span class="op">=</span>[]</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num_layer <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>):</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> tree.DecisionTreeClassifier(max_depth<span class="op">=</span>num_layer)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> model.fit(bow_train, df_train[<span class="st">'labels'</span>])</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    yp_train<span class="op">=</span>model.predict(bow_train)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    yp_test<span class="op">=</span>model.predict(bow_test)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred.shape)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    test_results.append([num_layer,accuracy_score(df_test[<span class="st">'labels'</span>], yp_test),recall_score(df_test[<span class="st">'labels'</span>], yp_test,pos_label<span class="op">=</span><span class="st">'news'</span>),recall_score(df_test[<span class="st">'labels'</span>], yp_test,pos_label<span class="op">=</span><span class="st">'op'</span>)])</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    train_results.append([num_layer,accuracy_score(df_train[<span class="st">'labels'</span>], yp_train),recall_score(df_train[<span class="st">'labels'</span>], yp_train,pos_label<span class="op">=</span><span class="st">'news'</span>),recall_score(df_train[<span class="st">'labels'</span>], yp_train,pos_label<span class="op">=</span><span class="st">'op'</span>)])</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>test_results<span class="op">=</span>[]</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>train_results<span class="op">=</span>[]</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> num_layer <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>):</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> tree.DecisionTreeClassifier(max_depth<span class="op">=</span>num_layer)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> model.fit(bow_train, df_train[<span class="st">'labels'</span>])</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    yp_train<span class="op">=</span>model.predict(bow_train)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    yp_test<span class="op">=</span>model.predict(bow_test)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(y_pred.shape)</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    test_results.append([num_layer,accuracy_score(df_test[<span class="st">'labels'</span>], yp_test),recall_score(df_test[<span class="st">'labels'</span>], yp_test,pos_label<span class="op">=</span><span class="st">'news'</span>),recall_score(df_test[<span class="st">'labels'</span>], yp_test,pos_label<span class="op">=</span><span class="st">'op'</span>)])</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    train_results.append([num_layer,accuracy_score(df_train[<span class="st">'labels'</span>], yp_train),recall_score(df_train[<span class="st">'labels'</span>], yp_train,pos_label<span class="op">=</span><span class="st">'news'</span>),recall_score(df_train[<span class="st">'labels'</span>], yp_train,pos_label<span class="op">=</span><span class="st">'op'</span>)])</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>test_results_df <span class="op">=</span> pd.DataFrame(test_results, columns<span class="op">=</span>[<span class="st">'depth'</span>, <span class="st">'accuracy'</span>, <span class="st">'recall_0'</span>, <span class="st">'recall_1'</span>]).set_index(<span class="st">'depth'</span>)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>train_results_df <span class="op">=</span> pd.DataFrame(train_results, columns<span class="op">=</span>[<span class="st">'depth'</span>, <span class="st">'accuracy'</span>, <span class="st">'recall_0'</span>, <span class="st">'recall_1'</span>]).set_index(<span class="st">'depth'</span>)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>xlabel <span class="op">=</span> <span class="st">'Number of layers in decision tree'</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>ylabel <span class="op">=</span> <span class="st">'Training (blue) and test (orange)'</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># ACCURACY</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>fig1, ax1 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">13</span>))</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>train_results_df.index, y<span class="op">=</span>train_results_df[<span class="st">'accuracy'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax1)</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>test_results_df.index, y<span class="op">=</span>test_results_df[<span class="st">'accuracy'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax1)</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>ax1.set_xlabel(xlabel)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>ax1.set_ylabel(<span class="st">"ACCURACY (Y = News): "</span> <span class="op">+</span> ylabel)</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># RECALL Y=0</span></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>fig2, ax2 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">13</span>))</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>train_results_df.index, y<span class="op">=</span>train_results_df[<span class="st">'recall_0'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax2)</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>test_results_df.index, y<span class="op">=</span>test_results_df[<span class="st">'recall_0'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax2)</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(xlabel)</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"RECALL (Y = News): "</span> <span class="op">+</span> ylabel)</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co"># RECALL Y=1</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>fig3, ax3 <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">13</span>))</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>train_results_df.index, y<span class="op">=</span>train_results_df[<span class="st">'recall_1'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax3)</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>sns.lineplot(x<span class="op">=</span>test_results_df.index, y<span class="op">=</span>test_results_df[<span class="st">'recall_1'</span>], marker<span class="op">=</span><span class="st">'o'</span>, ax<span class="op">=</span>ax3)</span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>ax3.set_xlabel(xlabel)</span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>ax3.set_ylabel(<span class="st">"RECALL (Y = Opinion): "</span> <span class="op">+</span> ylabel)</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<p><img src="dt_files/figure-html/cell-3-output-1.png" width="1556" height="1021"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="dt_files/figure-html/cell-3-output-2.png" width="1556" height="1021"></p>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="dt_files/figure-html/cell-3-output-3.png" width="1573" height="1021"></p>
-</div>
-</div>
-<p>As we can see in the plots above, the test set generally does not improve with deeper decision trees. There is a slight improvement in recall of the opinion class at a depth of 5, but that is the only indication of improvement. Therefore, we will train the model at a maximum depth of 5.</p>
-</section>
-<section id="final-results" class="level3">
-<h3 class="anchored" data-anchor-id="final-results">Final Results</h3>
-<p>Here we will train the final decision tree model.</p>
-<div class="cell" data-execution_count="3">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tree.DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> model.fit(bow_train, df_train[<span class="st">'labels'</span>])</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>yp_train <span class="op">=</span> model.predict(bow_train)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>yp_test <span class="op">=</span> model.predict(bow_test)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>target_names <span class="op">=</span> [<span class="st">'News'</span>, <span class="st">'Opinion'</span>]</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the confusion matrix and classification report for the train and test data. </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>cm_train <span class="op">=</span> confusion_matrix(df_train[<span class="st">'labels'</span>], yp_train, labels<span class="op">=</span>model.classes_)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>cm_test <span class="op">=</span> confusion_matrix(df_test[<span class="st">'labels'</span>], yp_test, labels<span class="op">=</span>model.classes_)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the results in a data frame. </span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>clf_report_linear_train <span class="op">=</span> classification_report(df_train[<span class="st">'labels'</span>], yp_train, target_names<span class="op">=</span>target_names, output_dict<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>clf_report_linear_train <span class="op">=</span> pd.DataFrame(clf_report_linear_train).transpose()</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>clf_report_linear_train</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>clf_report_linear_test <span class="op">=</span> classification_report(df_test[<span class="st">'labels'</span>], yp_test, target_names<span class="op">=</span>target_names, output_dict<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>clf_report_linear_test <span class="op">=</span> pd.DataFrame(clf_report_linear_test).transpose()</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>clf_report_linear_test</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Display Confusion Matrix for the test data. Remember to use the ConfusionMatrixDisplay function.</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot individual confusion matrices for website</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update({<span class="st">'font.size'</span>: <span class="dv">40</span>})</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">13</span>))</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>sns.heatmap(cm_test, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'g'</span>, ax<span class="op">=</span>ax, vmin<span class="op">=</span><span class="dv">0</span>, vmax<span class="op">=</span><span class="dv">3500</span>, cmap<span class="op">=</span><span class="st">'Greens'</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify axis titles</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Decision Tree Model"</span>, fontdict<span class="op">=</span>{<span class="st">'fontsize'</span>: <span class="dv">50</span>})</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify labels and ticks</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Predicted label'</span>)</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'True label'</span>)</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>ax.xaxis.set_ticklabels([<span class="st">'News'</span>, <span class="st">'Opinion'</span>])</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>ax.yaxis.set_ticklabels([<span class="st">'News'</span>, <span class="st">'Opinion'</span>])</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'./../../501-project-website/images/dt/cm.png'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-display">
-<p><img src="dt_files/figure-html/cell-4-output-1.png" width="1595" height="1163"></p>
-</div>
-</div>
-<p>Clearly there is a level of overfit in the decision tree model, even at a low maximum depth. Considering the hyperparameter tuning plots, it seems this is purely an issue with using decision trees for this specific problem. They do not seem to be well-optimized for the nature of this problem.</p>
-</section>
-<section id="conclusions" class="level3">
-<h3 class="anchored" data-anchor-id="conclusions">Conclusions</h3>
-<p>All in all, this analysis went poorly. No matter how much tuning we performed on the decision tree model, it was never able to perform accurate predictions of the nature of a given tweet. It tended to prefer predicting a tweet as an opinion tweet, even when it was not.</p>
-<p>In the future, I would stick to Naive Bayes algorithms for this kind of analysis.</p>
-</section>
-</section>
-
-</main>
-<!-- /main column -->
-<script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
-    }
-  });
-  clipboard.on('success', function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  });
-  function tippyHover(el, contentFn) {
-    const config = {
-      allowHTML: true,
-      content: contentFn,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start'
-    };
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      return note.innerHTML;
-    });
-  }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
-      });
-    }
-  }
-});
-</script>
-</div> <!-- /content -->
-
-
-</div>
-</body></html>
+    </body>
+</html>
