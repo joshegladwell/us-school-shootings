@@ -35,8 +35,26 @@
             </div>
         </div>
         <div class="text">
-            <h1>ARM and Networking</h1>
-            This part of the project is in progress.
+            <h1>Association Rule Mining (ARM) and Networking</h1>
+            <h2>Introduction</h2>
+            <p>In this analysis, I will be using The Violence Project's Mass Shooter Database to identify patterns in the detailed, albeit limited, data they have of 24 school shooters. Using ARM, we will be able to recognize "rules", or commonalities, across the numerous variables associated with each shooter in this dataset.</p>
+            <p>This technique for analysis will differ from previous techniques used in this project in that it will provide greater room for interpretability of the results. Rather than training an algorithm to make predictions that classify school shootings incidents or tweets, we hope to make inferences about the perpetrators of these incidents from this analysis.</p>
+
+            <h2>Theory</h2>
+            <p>ARM is built on a concept of network analysis. We may conceptualize record data as network data by considering each record in a dataset to be a node, where all the nodes are connected by common variables.</p>
+            <img src="../images/arm/networkx_sample.png" width="1200">
+            <p>In the diagram above, each node may be treated as an observation defined by a set of features or variables. The arrows between each node represent connecting features between the observations. For example, suppose the nodes in the diagram represent social media users, and the connections (usually called "edges") represent views on a user's page. We learn from the diagram that User 0 and User 1 have viewed User 3's page, User 3 has viewed User 5's page and User 6's page, and so forth.</p>
+            <p>Using this framework of network data, ARM systematically identifies rules in the network according to the relative frequency of connections between nodes. For example, using the sample diagram above we may find from an ARM analysis that if User 6's page is viewed, as a rule the user that viewed it is User 3, User 4, or User 5. The rules are obviously most meaningful with larger datasets, but they can provide grounds for interesting inferences and directions for further research.</p>
+
+            <h2>Methods</h2>
+            <p>The Python code documenting the ARM computations can be found <a href="" target="_blank">here</a>.</p>
+
+            <h2>Results</h2>
+
+            <h2>Conclusions</h2>
+
+            <h2>References</h2>
+            <p>The sample network diagram is taken from <a href="https://networkx.org/documentation/stable/auto_examples/basic/plot_simple_graph.html#sphx-glr-auto-examples-basic-plot-simple-graph-py" target="_blank">this tutorial</a> on the NetworkX website.</p>
         </div>
     </body>
 </html>
