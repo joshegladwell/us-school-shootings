@@ -50,8 +50,100 @@
             <p>The Python code documenting the ARM computations can be found <a href="https://github.com/anly501/anly-501-project-joshegladwell/blob/main/codes/08-arm_networking/arm_networking.ipynb" target="_blank">here</a>.</p>
 
             <h2>Results</h2>
+            <p>There are a few metrics commonly used to evaluate the results of ARM analysis. Roughly speaking, <i>support</i> is a measure of the frequency of each co-occurrence, <i>confidence</i> is a measure of the ratio of co-occurrences to occurrences of the first item, and <i>support x confidence</i> is a combination of the two. The rules with the highest support (0.65 or higher) are as follows:</p>
+            <img src="../images/arm/top_support.png" width="1200">
+            <table class="center-table">
+                <tr>
+                    <th>Node Number</th>
+                    <th>Item Description</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Exhibited increased agitation</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Had an existing relationship with the shooting site</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Exhibited signs of being in crisis</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Significant prior planning</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Exhibited increased agitation AND had an existing relationship with the shooting site</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Exhibited signs of being in crisis AND increased agitation</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Exhibited signs of being in crisis AND had an existing relationship with the shooting site</td>
+                </tr>
+            </table>
+
+            <p>Likewise, the rules with perfect confidence (and support of at least 0.55) are as follows:</p>
+            <img src="../images/arm/top_conf.png" width="1200">
+            <table class="center-table">
+                <tr>
+                    <th>Node Number</th>
+                    <th>Item Description</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Exhibited abusive behavior</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Exhibited increased agitation</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Perpetrator is the youngest child</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Exhibited isolation in crisis</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Was notably depressed</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Perpetrator was dead before their trial</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Exhibited abusive behavior AND increased agitation</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>Had an existing relationship with the shooting site AND increased agitation</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td>Exhibited increased agitation AND isolation in crisis</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>Exhibited increased agitation AND significant prior planning</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td>Was notably depressed AND communicated intent to harm to a third party</td>
+                </tr>
+            </table>
 
             <h2>Conclusions</h2>
+            <p>Although these results are all "statistically" significant (having high support), they aren't of particular interest or "practically" significant. Many of the items are understandably very highly correlated with each other. For example, it makes sense that if a perpetrator exhibits abusive behavior in crisis, they tend to also exhibit increased agitation. One of the more interesting results is the connection between being the youngest child and exhibiting increased agitation in crisis.</p>
+            <p>One important principle to remember in this analysis is that we can make no claims about causation between rule items. For example, we cannot say that abusive behavior in crisis leads to agitated behavior. Although it is a logical claim, ARM only identifies highly correlated events and leaves room for inference.</p>
+            <p>For future work, we would prune out the crisis variables to leave more room for interesting rules.</p>
 
             <h2>References</h2>
             <p>The sample network diagram is taken from <a href="https://networkx.org/documentation/stable/auto_examples/basic/plot_simple_graph.html#sphx-glr-auto-examples-basic-plot-simple-graph-py" target="_blank">this tutorial</a> on the NetworkX website.</p>
