@@ -28,6 +28,12 @@
     height: 130px;
 }
 
+/* For image logo */
+.header-center img.logo {
+    width: 140px;
+}
+
+/* For text logo (not used in this version) */
 .header-center a.logo {
     font-family: Century;
     font-size: 84pt;
@@ -35,6 +41,7 @@
     color: forestgreen;
 }
 
+/* For text logo (not used in this version) */
 .header-center a.logo:hover {
     color: forestgreen;
 }
@@ -45,7 +52,6 @@
     font-size: 16pt;
     margin-bottom: 20px;
 }
-
 
 /* Website body */
 .text {
